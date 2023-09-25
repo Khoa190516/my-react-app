@@ -1,0 +1,16 @@
+.navbar {
+    background-color: black;
+    font-size: 25px;
+    padding: 20px;
+    text-align: right;
+}
+
+.link {
+    color: white;
+    padding: 10px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.links :hover {
+    color: aqua;
+}

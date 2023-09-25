@@ -1,0 +1,31 @@
+.list-container {
+    background-color: rgb(254, 207, 207);
+    color: white;
+}
+.list-post {
+    padding-left: 5%;
+    padding-right: 5%;
+    height: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.list-title{
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    font-style: oblique;
+    margin: 20px 20px 20px 20px;
+    padding-top: 20px;
+}
+
+.view-post-button {
+    padding: 10px;
+    background-color: aqua;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.view-post-button :hover {
+    background-color: bisque;
+}
