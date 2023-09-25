@@ -7,17 +7,17 @@ export const Post = (post) => {
     return (
         <>
             {
-                post.photoUrls == undefined ? (
+                post.id == undefined ? (
                     <div>Something went wrong !</div>
                 ) : (
                     <div className="post">
                         <div className="img-container">
                             <LazyLoad>
-                                <img className="pet-img" src={post.photoUrls[0] !== "string" ? post.photoUrls[0] : defaultAvatar} alt="post" />
+                                <img className="pet-img" src={post.postImages[0].imageBase64 !== "string" ? post.postImages[0].imageBase64 : defaultAvatar} alt="post" />
                             </LazyLoad>
                         </div>
-                        <div className="title">{post.name}</div>
-                        <div className="category"> Category: {post.category && post.category.name !== "string" ? post.category.name : "N/A"} </div>
+                        <div className="title">{post.description}</div>
+                        <div className="category"> Category: {post.contact && post.contact !== "string" ? post.contact : "N/A"} </div>
                         <ViewPostButtonButton {...post} />
                     </div>
                 )
