@@ -8,6 +8,8 @@ export default function ViewPostButton(post){
     }
 
     return (
-        <button onClick={showPost} className="view-post-button">View More</button>
+        <div className="view-btn-container">
+            <button onClick={showPost} className="view-post-button">View More</button>
+        </div>
     )
 }

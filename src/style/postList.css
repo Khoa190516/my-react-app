@@ -26,6 +26,6 @@
     font-weight: bold;
 }
 
-.view-post-button :hover {
+.view-btn-container :hover {
     background-color: bisque;
 }
