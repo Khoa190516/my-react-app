@@ -33,7 +33,7 @@ export const PostDetail = () => {
 
     return (
         <>
-            <div className="detail-title">View Pet</div>
+            <div className="detail-title">View Pet Information</div>
             {pet.id !== undefined ? (
                 <div className="post-detail">
                     <div className="img-container-detail left-content">
