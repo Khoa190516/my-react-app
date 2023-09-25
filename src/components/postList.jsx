@@ -1,10 +1,10 @@
-import {Post} from './post'
+import { Post } from './post'
 import '../style/postList.css'
 import { useEffect, useState } from 'react'
 export const PostList = () => {
     const [posts, setPosts] = useState([]);
 
-    async function fetchPosts(){
+    async function fetchPosts() {
         var res = await fetch("https://petstore.swagger.io/v2/pet/findByStatus?status=available");
         var data = await res.json();
         console.log(data);
@@ -12,16 +12,22 @@ export const PostList = () => {
         console.log(posts);
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         fetchPosts();
     }, []);
 
     return (
         <div className='list-container'>
             <div className='list-title'> Pet List </div>
-            <div className='list-post'>
-                {posts.map((post, index)=>(<Post key={index} {...post}/>))}
-            </div>
+            {
+                posts.length < 0 ? (
+                    <div>No Post To Show</div>
+                ) : (
+                    <div className='list-post'>
+                        {posts.map((post, index) => (<Post key={index} {...post} />))}
+                    </div>
+                )
+            }
         </div>
     )
 }
