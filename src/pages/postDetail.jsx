@@ -40,7 +40,7 @@ export const PostDetail = () => {
                         <img src={pet.photoUrls[0] !== "string" ? pet.photoUrls[0] : defaultAvatar} alt="post" />
                     </div>
                     <div className="right-detail-content">
-                        <div className="title-detail">Name: {pet.name}</div>
+                        <div className="title-detail">Name Pet: {pet.name}</div>
                         <div className="category-detail"> Category: {pet.category && pet?.category.name !== "string" ? pet.category.name : "N/A"} </div>
                         <div className="category-detail">
                             Tags: {pet.tags && pet.tags.map((tag, index) => {
