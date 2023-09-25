@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/my-react-app/static/css/main.ea93de0d.css",
-    "main.js": "/my-react-app/static/js/main.6da4b1f0.js",
-    "static/js/787.bc7d429a.chunk.js": "/my-react-app/static/js/787.bc7d429a.chunk.js",
-    "static/media/banner.jpg": "/my-react-app/static/media/banner.d351650928c0b007fa53.jpg",
-    "index.html": "/my-react-app/index.html",
-    "main.ea93de0d.css.map": "/my-react-app/static/css/main.ea93de0d.css.map",
-    "main.6da4b1f0.js.map": "/my-react-app/static/js/main.6da4b1f0.js.map",
-    "787.bc7d429a.chunk.js.map": "/my-react-app/static/js/787.bc7d429a.chunk.js.map"
+    "main.css": "/pet-store-reactjs-app/static/css/main.ea93de0d.css",
+    "main.js": "/pet-store-reactjs-app/static/js/main.95324afd.js",
+    "static/js/787.bc7d429a.chunk.js": "/pet-store-reactjs-app/static/js/787.bc7d429a.chunk.js",
+    "static/media/banner.jpg": "/pet-store-reactjs-app/static/media/banner.d351650928c0b007fa53.jpg",
+    "index.html": "/pet-store-reactjs-app/index.html",
+    "main.ea93de0d.css.map": "/pet-store-reactjs-app/static/css/main.ea93de0d.css.map",
+    "main.95324afd.js.map": "/pet-store-reactjs-app/static/js/main.95324afd.js.map",
+    "787.bc7d429a.chunk.js.map": "/pet-store-reactjs-app/static/js/787.bc7d429a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ea93de0d.css",
-    "static/js/main.6da4b1f0.js"
+    "static/js/main.95324afd.js"
   ]
 }
