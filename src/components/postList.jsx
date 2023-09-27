@@ -7,7 +7,9 @@ export const PostList = () => {
     const [posts, setPosts] = useState([]);
 
     async function fetchPosts() {
-        var res = await fetch("https://petgarden-f030018191f7.herokuapp.com/api/Posts/sample-data");
+        var url = "https://demo-node-js-api-e9f692f0b746.herokuapp.com/posts";
+        var localUrl = "http://localhost:3000/posts";
+        var res = await fetch(url);
         var data = await res.json();
         console.log(data);
         setPosts(data);
