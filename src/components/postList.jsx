@@ -9,7 +9,8 @@ export const PostList = () => {
     async function fetchPosts() {
         var url = "https://demo-node-js-api-e9f692f0b746.herokuapp.com/posts";
         var localUrl = "http://localhost:3000/posts";
-        var res = await fetch(url);
+        var dotNetUrl = "https://petgarden-f030018191f7.herokuapp.com/api/Posts/sample-data";
+        var res = await fetch(dotNetUrl);
         var data = await res.json();
         console.log(data);
         setPosts(data);
