@@ -1,0 +1,60 @@
+.popup-content{
+    height: auto;
+    width: auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px 0 rgb(47, 46, 46);
+    position: absolute;
+    padding: 3%;
+}
+
+.popup-overlay{
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.button-container{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 1%;
+}
+
+.header{
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.input-container{
+    display: grid;
+    grid-column: auto;
+}
+
+.img-preview{
+    width: 60%;
+    height: 80%;
+}
+
+.trigger-container{
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 6%;
+    margin-bottom: 3%;
+    margin-top: 3%;
+}
+
+.open-popup-button{
+    width: 80px;
+    height: 30px;
+    border-radius: 5px;
+    border: 2px solid greenyellow;
+    font-weight: bold;
+    background-color: greenyellow;
+    scale: 1.4;
+    box-shadow: 0 4px 8px 0 #aabaef;
+    color: rgb(91, 86, 86);
+}
+
+.open-popup-button:hover{
+    scale: 1.5;
+    color: rgb(45, 62, 173);
+}

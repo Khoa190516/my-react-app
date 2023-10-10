@@ -8,9 +8,9 @@ export const PostList = () => {
 
     async function fetchPosts() {
         var url = "https://demo-node-js-api-e9f692f0b746.herokuapp.com/posts";
-        var localUrl = "http://localhost:3000/posts";
+        var localUrl = "https://localhost:7217/api/Posts";
         var dotNetUrl = "https://petgarden-f030018191f7.herokuapp.com/api/Posts/sample-data";
-        var res = await fetch(dotNetUrl);
+        var res = await fetch(localUrl);
         var data = await res.json();
         console.log(data);
         setPosts(data);
@@ -23,7 +23,7 @@ export const PostList = () => {
 
     return (
         <div className='list-container'>
-            <div className='list-title'> Pet List </div>
+            <div className='list-title'> All Posts </div>
             {
                 posts.length < 0 ? (
                     <div>No Post To Show</div>

@@ -5,6 +5,7 @@ import { Home } from './pages/home';
 import { Login } from './pages/login';
 import { Error } from './pages/error';
 import { PostDetail } from './pages/postDetail';
+import { MyPost } from './pages/myPost';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path='/' Component={Home}/>
           <Route path='/login' Component={Login}/>
           <Route path='/pet/:id' Component={PostDetail}/>
+          <Route path='/my-post' Component={MyPost}/>
           <Route path='*' Component={Error}/>
         </Routes>
       </Router>

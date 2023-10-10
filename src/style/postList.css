@@ -1,7 +1,7 @@
-.list-container {
+/* .list-container {
     background-color: rgb(254, 207, 207);
     color: white;
-}
+} */
 .list-post {
     padding-left: 5%;
     padding-right: 5%;
@@ -17,15 +17,4 @@
     font-style: oblique;
     margin: 20px 20px 20px 20px;
     padding-top: 20px;
-}
-
-.view-post-button {
-    padding: 10px;
-    background-color: aqua;
-    border-radius: 10px;
-    font-weight: bold;
-}
-
-.view-btn-container :hover {
-    background-color: bisque;
 }

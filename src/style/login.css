@@ -1,0 +1,16 @@
+.login-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.login-card {
+    width: 40%;
+    background-color: aliceblue;
+    padding: 5%;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px 0 rgb(34, 33, 33);
+    position: absolute;
+    left: 25%;
+    top: 40%;
+}

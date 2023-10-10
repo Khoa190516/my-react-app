@@ -4,6 +4,11 @@
     text-align: center;
     background-color: white;
     border-radius: 15px;
+    box-shadow: 0 4px 8px 0 rgb(43, 42, 42);
+}
+
+.post:hover{
+    scale: 1.02;
 }
 
 .img-container {
@@ -25,4 +30,15 @@
 .category {
     margin: 5px;
     color: black;
+}
+
+.view-post-button {
+    padding: 10px;
+    background-color: aqua;
+    border-radius: 10px;
+    font-weight: bold;;
+}
+
+.view-btn-container :hover {
+    background-color: bisque;
 }
