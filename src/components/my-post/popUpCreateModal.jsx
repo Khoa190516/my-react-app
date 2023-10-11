@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { BASE_HEROKU_URL, INSERT, POST_CONTROLLER, UPLOAD_IMG } from '../../services/apis';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const PopUpCreateModal = () => {
 
@@ -35,7 +37,7 @@ export const PopUpCreateModal = () => {
         e.preventDefault();
 
         if (selectedFile === null || selectedFile === undefined) {
-            alert("Please pick a image");
+            toast.error("Please pick a image");
             return;
         }
 
@@ -71,7 +73,7 @@ export const PopUpCreateModal = () => {
         var token = localStorage.getItem('token');
 
         if (token === null || token === undefined || token === "") {
-            alert("Error not login yet, please login to create post");
+            toast.error("Error not login yet, please login to create post");
             return;
         }
 
@@ -88,14 +90,14 @@ export const PopUpCreateModal = () => {
         })
 
         if (resCreate.status !== 200) {
-            alert("Create post failed");
+            toast.error("Create post failed");
             return;
         }
 
         const dataCreate = await resCreate.json();
         console.log(dataCreate);
         setIsLoading(false);
-        alert("Post created !!");
+        toast.success("Post created !!");
         window.location.reload();
     }
 
@@ -104,6 +106,7 @@ export const PopUpCreateModal = () => {
             <div className="modal">
                 <div className="header"> Create Post </div>
                 <div className="content">
+                    <ToastContainer/>
                     <form onSubmit={(e) => createPost(e)}>
                         <div className="input-container">
                             <label>Title </label>

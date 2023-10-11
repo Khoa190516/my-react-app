@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { BASE_HEROKU_URL, DELETE, INSERT, POST_CONTROLLER, UPDATE, UPLOAD_IMG } from '../../services/apis';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const PopUpEditModal = (post) => {
 
@@ -37,7 +39,7 @@ export const PopUpEditModal = (post) => {
         e.preventDefault();
 
         if (selectedFile === null || selectedFile === undefined) {
-            alert("Please pick a new image");
+            toast.error("Please pick a new image");
             return;
         }
 
@@ -74,7 +76,7 @@ export const PopUpEditModal = (post) => {
         var token = localStorage.getItem('token');
 
         if (token === null || token === undefined || token === "") {
-            alert("Error not login yet, please login to create post");
+            toast.error("Error not login yet, please login to create post");
             return;
         }
 
@@ -91,14 +93,14 @@ export const PopUpEditModal = (post) => {
         })
 
         if (resCreate.status !== 200) {
-            alert("Edit post failed");
+            toast.error("Edit post failed");
             return;
         }
 
         const dataCreate = await resCreate.json();
         console.log(dataCreate);
         setIsLoading(false);
-        alert("Post Updated !!");
+        toast.success("Post Updated !!");
         window.location.reload();
     }
 
@@ -108,7 +110,7 @@ export const PopUpEditModal = (post) => {
         var token = localStorage.getItem('token');
 
         if (token === null || token === undefined || token === "") {
-            alert("Error not login yet, please login to create post");
+            toast.error("Error not login yet, please login to create post");
             return;
         }
 
@@ -129,14 +131,14 @@ export const PopUpEditModal = (post) => {
         })
 
         if (resCreate.status !== 200) {
-            alert("Delete post failed");
+            toast.error("Delete post failed");
             return;
         }
 
         const dataCreate = await resCreate.json();
         console.log(dataCreate);
         setIsDeleting(false);
-        alert("Post Delete !!");
+        toast.success("Post Delete !!");
         window.location.reload();
     }
 
@@ -153,6 +155,7 @@ export const PopUpEditModal = (post) => {
             <div className="modal">
                 <div className="header"> Edit Post </div>
                 <div className="content">
+                    <ToastContainer/>
                     <form onSubmit={(e) => editPost(e)}>
                         <div className="input-container">
                             <label>Title </label>

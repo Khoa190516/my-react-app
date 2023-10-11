@@ -6,6 +6,8 @@ import { useEffect } from "react";
 import '../style/auth/login.css';
 import { ACCOUNT_CONTROLLER, BASE_HEROKU_URL, LOGIN } from '../services/apis';
 import { Loading } from '../components/global/loading';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Login = () => {
 
@@ -55,11 +57,13 @@ export const Login = () => {
         }
 
         if (res === undefined || res.status !== 200) {
-            alert("Login failed, email not found !!")
+            toast.error("Login failed, email not found !!")
+            setIsLoading(false);
             return;
         } else {
             var data = await res.json();
             var result = data;
+            setIsLoading(false);
             return result;
         }
     }
@@ -72,9 +76,12 @@ export const Login = () => {
         e.preventDefault();
         setIsLoading(true);
         var data = await loginSuccess(emailInput);
-        if (data === undefined) return;
+        if (data === undefined) {
+            setIsLoading(false);
+            return;
+        };
         setOtp(data.otp);
-        alert(data.otp);
+        toast(data.otp);
         setTokenReceive(data.token);
         setIsEmailSend(true);
         setIsLoading(false);
@@ -85,13 +92,11 @@ export const Login = () => {
         if (otpInput === undefined || otpInput === "") return;
         setIsLoading(true);
         if (otpInput.trim().toLowerCase() === otp.trim().toLowerCase()) {
-            alert("Login success");
             localStorage.setItem('token', tokenReceive);
             console.log(tokenReceive);
             setIsLoading(false);
-            window.location.reload();
         } else {
-            alert("OTP is not correct");
+            toast.error("OTP is not correct");
             setIsLoading(false);
             return;
         }
@@ -119,6 +124,7 @@ export const Login = () => {
 
     return (
         <div className="login-card">
+            <ToastContainer />
             <div className="login-title">Login Page</div>
             {
                 isGoogleLoading === true ? <Loading /> :
