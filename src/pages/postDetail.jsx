@@ -3,11 +3,12 @@ import { useParams } from "react-router-dom"
 import defaultAvatar from "../assets/banner.jpg"
 import "../style/postDetail.css"
 import parse from 'html-react-parser'
+import { BASE_HEROKU_URL, GET_POST_BY_ID, POST_CONTROLLER } from "../services/apis";
 
 export const PostDetail = () => {
     const { id } = useParams();
-    const getByIdUrl = "https://petstore.swagger.io/v2/pet/";
-    var localPetUrl = "https://localhost:7217/api/Posts/get-by-id?postId=";
+    var localPetUrl = BASE_HEROKU_URL + POST_CONTROLLER + GET_POST_BY_ID;
+
     const [pet, setPet] = useState({
         id: "string",
         title: "",

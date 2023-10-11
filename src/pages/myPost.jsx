@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Post } from "../components/post";
 import LazyLoad from "react-lazy-load";
-import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { PopUpCreateModal } from "../components/popUpCreateModal";
+import { ACCOUNT_CONTROLLER, BASE_HEROKU_URL, MY_POST } from "../services/apis";
 
 export const MyPost = () => {
     const [isLogin, setIsLogin] = useState(false);
@@ -17,10 +17,10 @@ export const MyPost = () => {
             posts: [
                 {
                     id: "",
+                    title: "",
                     contact: "",
                     createdString: "",
                     description: "",
-                    title: "",
                     postImages: [
                         {
                             id: "",
@@ -33,7 +33,7 @@ export const MyPost = () => {
     );
 
     async function GetMyPosts() {
-        var url = "https://localhost:7217/api/AuthUser/get-posts-by-user";
+        const url = BASE_HEROKU_URL + ACCOUNT_CONTROLLER + MY_POST;
         var token = "Bearer " + localStorage.getItem('token');
         console.log(token);
         var res = await fetch(url, {

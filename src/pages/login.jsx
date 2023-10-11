@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { gapi } from 'gapi-script';
 import { useEffect } from "react";
 import '../style/login.css';
+import { ACCOUNT_CONTROLLER, BASE_HEROKU_URL, LOGIN } from '../services/apis';
 
 export const Login = () => {
 
-    const loginUrl = "https://localhost:7217/api/AuthUser/login";
+    const loginUrl = BASE_HEROKU_URL + ACCOUNT_CONTROLLER + LOGIN;
     const [errorMessages, setErrorMessages] = useState({});
     const [isEmailSend, setIsEmailSend] = useState(false);
     const [emailInput, setEmailInput] = useState("");
@@ -25,31 +26,38 @@ export const Login = () => {
         console.log(data);
         if (data === undefined) return;
         localStorage.setItem('token', data.token);
+        window.location.reload();
         navigate('/');
     }
 
     async function loginSuccess(emailLogin) {
-        var res = await fetch(loginUrl,
-            {
-                method: "POST",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email: emailLogin,
-                })
-            }
-        );
 
-        if (res.status === 500) {
-            alert("Login failed, email not found !!")
-            return;
+        try {
+            var res = await fetch(loginUrl,
+                {
+                    method: "POST",
+                    headers: {
+                        'Accept': '*/*',
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    },
+                    body: JSON.stringify({
+                        email: emailLogin,
+                    })
+                }
+            );
+        } catch (e) {
+            console.log(e.message);
         }
 
-        var data = await res.json();
-        var result = data;
-        return result;
+        if (res === undefined || res.status !== 200) {
+            alert("Login failed, email not found !!")
+            return;
+        } else {
+            var data = await res.json();
+            var result = data;
+            return result;
+        }
     }
 
     const onFailure = (res) => {
@@ -74,6 +82,7 @@ export const Login = () => {
             alert("Login success");
             localStorage.setItem('token', tokenReceive);
             console.log(tokenReceive);
+            window.location.reload();
             navigate('/');
         } else {
             alert("OTP is not correct");
@@ -94,6 +103,11 @@ export const Login = () => {
             })
         };
         gapi.load('client:auth2', start);
+
+        var token = localStorage.getItem('token');
+        if (token !== null) {
+            navigate('/');
+        }
     });
 
     return (

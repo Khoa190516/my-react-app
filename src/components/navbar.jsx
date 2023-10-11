@@ -1,11 +1,10 @@
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import '../style/navbar.css'
 import { useEffect, useState } from "react"
 
 export const Navbar = () => {
 
     const [isLogin, setIsLogin] = useState(false);
-    const navigate = useNavigate();
 
     function LogOut() {
         localStorage.removeItem('token');

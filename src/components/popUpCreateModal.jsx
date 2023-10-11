@@ -4,6 +4,7 @@ import '../style/popUpCreateModal.css';
 import { useState } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { BASE_HEROKU_URL, INSERT, POST_CONTROLLER, UPLOAD_IMG } from '../services/apis';
 
 export const PopUpCreateModal = () => {
 
@@ -14,8 +15,8 @@ export const PopUpCreateModal = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [imgUrl, setImgUrl] = useState("");
 
-    const uploadImageUrl = "https://localhost:7217/api/Posts/upload-images";
-    const createPostUrl = "https://localhost:7217/api/Posts/insert";
+    const uploadImageUrl = BASE_HEROKU_URL + POST_CONTROLLER + UPLOAD_IMG;
+    const createPostUrl = BASE_HEROKU_URL + POST_CONTROLLER + INSERT;
 
     const renderErrorMessage = (email) =>
         email === errorMessages.email && (
@@ -32,7 +33,7 @@ export const PopUpCreateModal = () => {
     const createPost = async (e) => {
         e.preventDefault();
 
-        if(selectedFile===null||selectedFile===undefined) {
+        if (selectedFile === null || selectedFile === undefined) {
             alert("Please pick a image");
             return;
         }

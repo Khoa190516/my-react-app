@@ -2,14 +2,13 @@ import { Post } from './post'
 import '../style/postList.css'
 import { useEffect, useState } from 'react'
 import LazyLoad from 'react-lazy-load'
+import { BASE_HEROKU_URL, POST_CONTROLLER } from '../services/apis'
 
 export const PostList = () => {
     const [posts, setPosts] = useState([]);
 
     async function fetchPosts() {
-        var url = "https://demo-node-js-api-e9f692f0b746.herokuapp.com/posts";
-        var localUrl = "https://localhost:7217/api/Posts";
-        var dotNetUrl = "https://petgarden-f030018191f7.herokuapp.com/api/Posts/sample-data";
+        var localUrl = BASE_HEROKU_URL + POST_CONTROLLER;
         var res = await fetch(localUrl);
         var data = await res.json();
         console.log(data);

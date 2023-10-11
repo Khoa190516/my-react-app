@@ -5,6 +5,7 @@
     background-color: white;
     border-radius: 15px;
     box-shadow: 0 4px 8px 0 rgb(43, 42, 42);
+    height: fit-content;
 }
 
 .post:hover{
