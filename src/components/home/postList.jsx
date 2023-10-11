@@ -1,8 +1,8 @@
 import { Post } from './post'
-import '../style/postList.css'
+import '../../style/home/postList.css'
 import { useEffect, useState } from 'react'
 import LazyLoad from 'react-lazy-load'
-import { BASE_HEROKU_URL, POST_CONTROLLER } from '../services/apis'
+import { BASE_HEROKU_URL, POST_CONTROLLER } from '../../services/apis'
 
 export const PostList = () => {
     const [posts, setPosts] = useState([]);

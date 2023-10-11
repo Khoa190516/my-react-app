@@ -3,7 +3,7 @@ import { GoogleLogin } from "react-google-login";
 import { useNavigate } from "react-router-dom";
 import { gapi } from 'gapi-script';
 import { useEffect } from "react";
-import '../style/login.css';
+import '../style/auth/login.css';
 import { ACCOUNT_CONTROLLER, BASE_HEROKU_URL, LOGIN } from '../services/apis';
 
 export const Login = () => {

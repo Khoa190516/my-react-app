@@ -1,0 +1,99 @@
+.popup-content{
+    height: auto;
+    width: auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px 0 rgb(47, 46, 46);
+    position: absolute;
+    padding: 3%;
+}
+
+.popup-overlay{
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.button-container{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 1%;
+}
+
+.header{
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 40px;
+    font-size: 20px;
+}
+
+.input-container{
+    display: grid;
+    grid-column: auto;
+}
+
+.img-preview{
+    width: 60%;
+    height: 80%;
+}
+
+.trigger-container{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 7%;
+    margin-right: 7%;
+    margin-bottom: 3%;
+}
+
+.open-popup-button{
+    width: 80px;
+    height: 30px;
+    border-radius: 5px;
+    margin-left: 10px;
+    border: 2px solid rgb(15, 130, 237);
+    font-weight: bold;
+    background-color: rgb(15, 130, 237);
+    scale: 1.4;
+    box-shadow: 0 4px 8px 0 #aabaef;
+    color: white
+}
+
+.open-popup-button:hover{
+    scale: 1.5;
+}
+
+.input-form{
+    height: 30px;
+    padding: 10px;
+}
+
+.btn-save{
+    height: auto;
+    font-size: 15px;
+    padding: 10px 15px 10px 15px;
+    border-radius: 5px;
+    border: 1px solid rgb(15, 130, 237);
+    background-color: rgb(15, 130, 237);
+    color: white;
+    box-shadow: 0 4px 8px 0 rgb(43, 41, 41);
+    font-weight: bold;
+}
+
+.btn-save:hover{
+    scale: 1.05;
+}
+
+.btn-delete{
+    height: auto;
+    font-size: 15px;
+    padding: 10px 15px 10px 15px;
+    border-radius: 5px;
+    border: 1px solid rgb(248, 12, 12);
+    background-color: rgb(248, 12, 12);
+    color: white;
+    box-shadow: 0 4px 8px 0 rgb(43, 41, 41);
+    font-weight: bold;
+    margin-right: 3%;
+}
+
+.btn-delete:hover{
+    scale: 1.05;
+}

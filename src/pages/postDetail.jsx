@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import defaultAvatar from "../assets/banner.jpg"
-import "../style/postDetail.css"
+import "../style/post-detail/postDetail.css"
 import parse from 'html-react-parser'
 import { BASE_HEROKU_URL, GET_POST_BY_ID, POST_CONTROLLER } from "../services/apis";
 

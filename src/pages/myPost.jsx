@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { Post } from "../components/post";
+import { MyPostCard } from "../components/my-post/myPostCard";
 import LazyLoad from "react-lazy-load";
 import 'reactjs-popup/dist/index.css';
-import { PopUpCreateModal } from "../components/popUpCreateModal";
+import { PopUpCreateModal } from "../components/my-post/popUpCreateModal";
 import { ACCOUNT_CONTROLLER, BASE_HEROKU_URL, MY_POST } from "../services/apis";
 
 export const MyPost = () => {
@@ -72,7 +72,7 @@ export const MyPost = () => {
                         <LazyLoad>
                             <div className="list-post">
                                 {
-                                    userPosts.posts.map((post, index) => (<Post key={index} {...post} />))
+                                    userPosts.posts.map((post, index) => (<MyPostCard key={index} {...post} />))
                                 }
                             </div>
                         </LazyLoad>

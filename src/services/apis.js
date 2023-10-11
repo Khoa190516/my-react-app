@@ -6,6 +6,7 @@ export const POST_CONTROLLER = "/post";
 
 export const INSERT = "/insert";
 export const UPDATE = "/update";
+export const DELETE = "/delete";
 export const PROFILE = "/profile";
 export const MY_POST ="/get-posts-by-user";
 export const UPLOAD_IMG = "/upload-images";

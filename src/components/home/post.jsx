@@ -1,6 +1,6 @@
 import ViewPostButtonButton from "./viewPostButton"
-import '../style/post.css'
-import defaultAvatar from '../assets/banner.jpg'
+import '../../style/home/post.css'
+import defaultAvatar from '../../assets/banner.jpg'
 import LazyLoad from "react-lazy-load"
 
 export const Post = (post) => {

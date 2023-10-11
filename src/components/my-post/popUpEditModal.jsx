@@ -1,12 +1,12 @@
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-import '../style/popUpCreateModal.css';
-import { useState } from 'react';
+import '../../style/my-post/popUpEditModal.css';
+import { useEffect, useState } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { BASE_HEROKU_URL, INSERT, POST_CONTROLLER, UPLOAD_IMG } from '../services/apis';
+import { BASE_HEROKU_URL, DELETE, INSERT, POST_CONTROLLER, UPDATE, UPLOAD_IMG } from '../../services/apis';
 
-export const PopUpCreateModal = () => {
+export const PopUpEditModal = (post) => {
 
     const [errorMessages, setErrorMessages] = useState({});
     const [title, setTitle] = useState("");
@@ -16,7 +16,8 @@ export const PopUpCreateModal = () => {
     const [imgUrl, setImgUrl] = useState("");
 
     const uploadImageUrl = BASE_HEROKU_URL + POST_CONTROLLER + UPLOAD_IMG;
-    const createPostUrl = BASE_HEROKU_URL + POST_CONTROLLER + INSERT;
+    const editPostUrl = BASE_HEROKU_URL + POST_CONTROLLER + UPDATE;
+    const deletePostUrl = BASE_HEROKU_URL + POST_CONTROLLER + DELETE;
 
     const renderErrorMessage = (email) =>
         email === errorMessages.email && (
@@ -30,7 +31,7 @@ export const PopUpCreateModal = () => {
         setImgUrl(objectUrl);
     }
 
-    const createPost = async (e) => {
+    const editPost = async (e) => {
         e.preventDefault();
 
         if (selectedFile === null || selectedFile === undefined) {
@@ -58,6 +59,7 @@ export const PopUpCreateModal = () => {
         });
 
         var newPost = {
+            id: post.id,
             title: title,
             description: des,
             contact: contact,
@@ -75,8 +77,8 @@ export const PopUpCreateModal = () => {
 
         token = "Bearer " + token;
 
-        const resCreate = await fetch(createPostUrl, {
-            method: 'POST',
+        const resCreate = await fetch(editPostUrl, {
+            method: 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Content-type': 'application/json',
@@ -86,22 +88,67 @@ export const PopUpCreateModal = () => {
         })
 
         if (resCreate.status !== 200) {
-            alert("Create post failed");
+            alert("Edit post failed");
             return;
         }
 
         const dataCreate = await resCreate.json();
         console.log(dataCreate);
-        alert("Post created !!");
+        alert("Post Updated !!");
         window.location.reload();
     }
 
+    const deletePost = async (e) => {
+        e.preventDefault();
+        
+        var token = localStorage.getItem('token');
+
+        if (token === null || token === undefined || token === "") {
+            alert("Error not login yet, please login to create post");
+            return;
+        }
+
+        token = "Bearer " + token;
+
+        const deletePost = {
+            id: post.id,
+        };
+
+        const resCreate = await fetch(deletePostUrl, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json',
+                'Authorization': token
+            },
+            body: JSON.stringify(deletePost)
+        })
+
+        if (resCreate.status !== 200) {
+            alert("Delete post failed");
+            return;
+        }
+
+        const dataCreate = await resCreate.json();
+        console.log(dataCreate);
+        alert("Post Delete !!");
+        window.location.reload();
+    }
+
+    useEffect(()=>{
+        console.log("Check: "+post.title)
+        setTitle(post.title)
+        setContact(post.contact)
+        setDes(post.description)
+        setImgUrl(post.postImages[0].imageBase64)
+    },[post])
+
     return (
-        <Popup modal trigger={<div className='trigger-container'><button className='open-popup-button'>Create</button></div>}>
+        <Popup modal trigger={<div className='trigger-container'><button className='open-popup-button'>Edit</button></div>}>
             <div className="modal">
-                <div className="header"> Create Post </div>
+                <div className="header"> Edit Post </div>
                 <div className="content">
-                    <form onSubmit={(e) => createPost(e)}>
+                    <form onSubmit={(e) => editPost(e)}>
                         <div className="input-container">
                             <label>Title </label>
                             <input className='input-form' type="text" name="title" value={title} onChange={event => setTitle(event.target.value)} required />
@@ -127,7 +174,8 @@ export const PopUpCreateModal = () => {
                             <img className='img-preview' src={imgUrl} alt="preview" srcSet="" />
                         </div>
                         <div className="button-container">
-                            <input className='btn-save' type="submit" />
+                            <input className='btn-delete' type="button" value="Delete" onClick={(e) => deletePost(e)}/>
+                            <input className='btn-save' type="submit" value="Save"/>
                         </div>
                     </form>
                 </div>
