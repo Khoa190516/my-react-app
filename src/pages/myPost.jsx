@@ -4,9 +4,12 @@ import LazyLoad from "react-lazy-load";
 import 'reactjs-popup/dist/index.css';
 import { PopUpCreateModal } from "../components/my-post/popUpCreateModal";
 import { ACCOUNT_CONTROLLER, BASE_HEROKU_URL, MY_POST } from "../services/apis";
+import { Loading } from "../components/global/loading";
+import '../style/my-post/myPost.css';
 
 export const MyPost = () => {
     const [isLogin, setIsLogin] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [userPosts, setUserPosts] = useState(
         {
             id: "string",
@@ -36,6 +39,7 @@ export const MyPost = () => {
         const url = BASE_HEROKU_URL + ACCOUNT_CONTROLLER + MY_POST;
         var token = "Bearer " + localStorage.getItem('token');
         console.log(token);
+        setIsLoading(true);
         var res = await fetch(url, {
             headers: {
                 'Accept': 'application/json',
@@ -44,10 +48,12 @@ export const MyPost = () => {
             },
         });
         var data = await res.json();
+        setIsLoading(false);
         console.log(data);
         setUserPosts(data);
         console.log(data);
         console.log(userPosts);
+        console.log(isLoading);
     }
 
     useEffect(() => {
@@ -62,23 +68,25 @@ export const MyPost = () => {
 
     return (
         <>
-            <div className="title">My Posts</div>
+            <div className="my-post-title">My Posts</div>
             {
-                isLogin === true ? (
-                    <>
-                        <div>
-                            <PopUpCreateModal></PopUpCreateModal>
-                        </div>
-                        <LazyLoad>
-                            <div className="list-post">
-                                {
-                                    userPosts.posts.map((post, index) => (<MyPostCard key={index} {...post} />))
-                                }
+                isLoading === true ? <Loading /> : (
+                    isLogin === true ? (
+                        <>
+                            <div>
+                                <PopUpCreateModal></PopUpCreateModal>
                             </div>
-                        </LazyLoad>
-                    </>
-                ) : (
-                    <div>Log in to view posts</div>
+                            <LazyLoad>
+                                <div className="list-post">
+                                    {
+                                        userPosts.posts.map((post, index) => (<MyPostCard key={index} {...post} />))
+                                    }
+                                </div>
+                            </LazyLoad>
+                        </>
+                    ) : (
+                        <div>Log in to view posts</div>
+                    )
                 )
             }
         </>

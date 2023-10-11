@@ -14,6 +14,8 @@ export const PopUpEditModal = (post) => {
     const [contact, setContact] = useState("");
     const [selectedFile, setSelectedFile] = useState(null);
     const [imgUrl, setImgUrl] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const uploadImageUrl = BASE_HEROKU_URL + POST_CONTROLLER + UPLOAD_IMG;
     const editPostUrl = BASE_HEROKU_URL + POST_CONTROLLER + UPDATE;
@@ -35,12 +37,13 @@ export const PopUpEditModal = (post) => {
         e.preventDefault();
 
         if (selectedFile === null || selectedFile === undefined) {
-            alert("Please pick a image");
+            alert("Please pick a new image");
             return;
         }
 
         const formData = new FormData();
         formData.append('files', selectedFile, selectedFile.name);
+        setIsLoading(true);
         const res = await fetch(uploadImageUrl, {
             method: 'POST',
             body: formData,
@@ -94,13 +97,14 @@ export const PopUpEditModal = (post) => {
 
         const dataCreate = await resCreate.json();
         console.log(dataCreate);
+        setIsLoading(false);
         alert("Post Updated !!");
         window.location.reload();
     }
 
     const deletePost = async (e) => {
         e.preventDefault();
-        
+
         var token = localStorage.getItem('token');
 
         if (token === null || token === undefined || token === "") {
@@ -113,7 +117,7 @@ export const PopUpEditModal = (post) => {
         const deletePost = {
             id: post.id,
         };
-
+        setIsDeleting(true);
         const resCreate = await fetch(deletePostUrl, {
             method: 'DELETE',
             headers: {
@@ -131,17 +135,18 @@ export const PopUpEditModal = (post) => {
 
         const dataCreate = await resCreate.json();
         console.log(dataCreate);
+        setIsDeleting(false);
         alert("Post Delete !!");
         window.location.reload();
     }
 
-    useEffect(()=>{
-        console.log("Check: "+post.title)
+    useEffect(() => {
+        console.log("Check: " + post.title)
         setTitle(post.title)
         setContact(post.contact)
         setDes(post.description)
         setImgUrl(post.postImages[0].imageBase64)
-    },[post])
+    }, [post])
 
     return (
         <Popup modal trigger={<div className='trigger-container'><button className='open-popup-button'>Edit</button></div>}>
@@ -174,8 +179,16 @@ export const PopUpEditModal = (post) => {
                             <img className='img-preview' src={imgUrl} alt="preview" srcSet="" />
                         </div>
                         <div className="button-container">
-                            <input className='btn-delete' type="button" value="Delete" onClick={(e) => deletePost(e)}/>
-                            <input className='btn-save' type="submit" value="Save"/>
+                            {
+                                isDeleting === true || isLoading === true ?
+                                    (<input className='btn-delete' type="button" value={isDeleting === true ? "Deleting..." : "Delete"} onClick={(e) => deletePost(e)} disabled />) :
+                                    (<input className='btn-delete' type="button" value={isDeleting === true ? "Deleting..." : "Delete"} onClick={(e) => deletePost(e)} />)
+                            }
+                            {
+                                isLoading === true || isDeleting === true ?
+                                    (<input className='btn-save' type="submit" value={isLoading === true ? "Saving..." : "Save"} disabled />) :
+                                    (<input className='btn-save' type="submit" value={isLoading === true ? "Saving..." : "Save"} />)
+                            }
                         </div>
                     </form>
                 </div>

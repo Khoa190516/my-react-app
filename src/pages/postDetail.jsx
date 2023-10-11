@@ -4,9 +4,11 @@ import defaultAvatar from "../assets/banner.jpg"
 import "../style/post-detail/postDetail.css"
 import parse from 'html-react-parser'
 import { BASE_HEROKU_URL, GET_POST_BY_ID, POST_CONTROLLER } from "../services/apis";
+import { Loading } from "../components/global/loading";
 
 export const PostDetail = () => {
     const { id } = useParams();
+    const [isLoading, setIsLoading] = useState(true);
     var localPetUrl = BASE_HEROKU_URL + POST_CONTROLLER + GET_POST_BY_ID;
 
     const [pet, setPet] = useState({
@@ -32,6 +34,7 @@ export const PostDetail = () => {
         var data = await res.json();
         console.log("Data: " + data);
         setPet(data);
+        setIsLoading(false);
     }
 
     useEffect(() => {
@@ -41,23 +44,24 @@ export const PostDetail = () => {
     return (
         <>
             <div className="detail-title">View Post</div>
-            {pet.id !== undefined ? (
-                <div className="post-detail">
-                    <div className="img-container-detail left-content">
-                        <img src={pet.postImages.length <= 0 ? defaultAvatar : pet.postImages[0].imageBase64} alt="post" />
+            {isLoading === true ? <Loading /> : (
+                pet.id !== undefined ? (
+                    <div className="post-detail">
+                        <div className="img-container-detail left-content">
+                            <img src={pet.postImages.length <= 0 ? defaultAvatar : pet.postImages[0].imageBase64} alt="post" />
+                        </div>
+                        <div className="right-detail-content">
+                            <div className="title-detail">{pet.title}</div><br />
+                            <div className="category-detail"> <b>Contact:</b> {pet.contact !== "string" ? pet.contact : "N/A"} </div>
+                            <div className="category-detail">
+                                <b>Created:</b> {pet.createdString}
+                            </div><br />
+                            <div className="category-detail"><b>Description: </b>{pet.description === null ? "" : parse(pet.description + "")}</div>
+                        </div>
                     </div>
-                    <div className="right-detail-content">
-                        <div className="title-detail">{pet.title}</div><br />
-                        <div className="category-detail"> <b>Contact:</b> {pet.contact !== "string" ? pet.contact : "N/A"} </div>
-                        <div className="category-detail">
-                            <b>Created:</b> {pet.createdString}
-                        </div><br />
-                        <div className="category-detail"><b>Description: </b>{pet.description === null ? "" : parse(pet.description + "")}</div>
-                    </div>
-                </div>
-            ) : (
-                <div>Opps... something went wrong !</div>
-            )}
+                ) : (
+                    <div>Opps... something went wrong !</div>
+                ))}
         </>
     )
 }

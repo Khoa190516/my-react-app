@@ -14,6 +14,7 @@ export const PopUpCreateModal = () => {
     const [contact, setContact] = useState("");
     const [selectedFile, setSelectedFile] = useState(null);
     const [imgUrl, setImgUrl] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const uploadImageUrl = BASE_HEROKU_URL + POST_CONTROLLER + UPLOAD_IMG;
     const createPostUrl = BASE_HEROKU_URL + POST_CONTROLLER + INSERT;
@@ -40,6 +41,7 @@ export const PopUpCreateModal = () => {
 
         const formData = new FormData();
         formData.append('files', selectedFile, selectedFile.name);
+        setIsLoading(true);
         const res = await fetch(uploadImageUrl, {
             method: 'POST',
             body: formData,
@@ -92,6 +94,7 @@ export const PopUpCreateModal = () => {
 
         const dataCreate = await resCreate.json();
         console.log(dataCreate);
+        setIsLoading(false);
         alert("Post created !!");
         window.location.reload();
     }
@@ -127,7 +130,10 @@ export const PopUpCreateModal = () => {
                             <img className='img-preview' src={imgUrl} alt="preview" srcSet="" />
                         </div>
                         <div className="button-container">
-                            <input className='btn-save' type="submit" value="Save"/>
+                            {
+                                isLoading === true ? <input className='btn-save' type="submit" value="Saving..." disabled /> :
+                                    <input className='btn-save' type="submit" value="Save" />
+                            }
                         </div>
                     </form>
                 </div>

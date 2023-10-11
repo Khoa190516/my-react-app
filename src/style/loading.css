@@ -1,0 +1,37 @@
+.loading-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    margin: 0px 5px;
+    animation: wave 1.5s ease-in-out infinite;
+}
+
+.circle-1 {
+    animation-delay: 0ms
+}
+
+.circle-2 {
+    animation-delay: 200ms
+}
+
+.circle-3 {
+    animation-delay: 400ms
+}
+
+@keyframes wave {
+    30% {
+        background-color: rgba(0, 0, 0, 0);
+    }
+
+    0%,
+    60%,
+    100% {
+        background-color: rgba(0, 0, 0, .2);
+    }
+}

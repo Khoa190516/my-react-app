@@ -5,6 +5,7 @@ import { gapi } from 'gapi-script';
 import { useEffect } from "react";
 import '../style/auth/login.css';
 import { ACCOUNT_CONTROLLER, BASE_HEROKU_URL, LOGIN } from '../services/apis';
+import { Loading } from '../components/global/loading';
 
 export const Login = () => {
 
@@ -15,6 +16,8 @@ export const Login = () => {
     const [otpInput, setOtpInput] = useState("");
     const [otp, setOtp] = useState("");
     const [tokenReceive, setTokenReceive] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [isGoogleLoading, setIsGoogleLoading] = useState(false);
     const navigate = useNavigate();
 
     const clientId = '45994015539-spvfn9tog7ma54lfi44ov9jm84s5jbq0.apps.googleusercontent.com';
@@ -22,10 +25,12 @@ export const Login = () => {
 
     const onSuccess = async (res) => {
         console.log(res);
+        setIsGoogleLoading(true);
         var data = await loginSuccess(res.profileObj.email);
         console.log(data);
         if (data === undefined) return;
         localStorage.setItem('token', data.token);
+        setIsGoogleLoading(false);
         window.location.reload();
     }
 
@@ -65,25 +70,29 @@ export const Login = () => {
 
     const login = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         var data = await loginSuccess(emailInput);
         if (data === undefined) return;
         setOtp(data.otp);
         alert(data.otp);
         setTokenReceive(data.token);
         setIsEmailSend(true);
+        setIsLoading(false);
     }
 
     function checkOTP(e) {
         e.preventDefault();
         if (otpInput === undefined || otpInput === "") return;
-
+        setIsLoading(true);
         if (otpInput.trim().toLowerCase() === otp.trim().toLowerCase()) {
             alert("Login success");
             localStorage.setItem('token', tokenReceive);
             console.log(tokenReceive);
+            setIsLoading(false);
             window.location.reload();
         } else {
             alert("OTP is not correct");
+            setIsLoading(false);
             return;
         }
     }
@@ -111,42 +120,53 @@ export const Login = () => {
     return (
         <div className="login-card">
             <div className="login-title">Login Page</div>
-            <div className="login-container">
-                <div className="login-form google-login-form">
-                    <GoogleLogin
-                        clientId={clientId}
-                        buttonText="Google "
-                        onSuccess={onSuccess}
-                        onFailure={onFailure}
-                        cookiePolicy="single_host_origin"
-                        isSignedIn={false}
-                    />
-                </div>
-                <div className="form login-form api-login-form">
-                    <form onSubmit={(e) => login(e)}>
-                        <div className="input-login-container">
-                            <label>Email</label>
-                            <input type="email" className="form-input" name="email" value={emailInput} onChange={event => setEmailInput(event.target.value)} required />
-                            {renderErrorMessage("email")}
-                            <input type="submit" value="Send Code" className="btn-submit"/>
-                        </div>
-                    </form><br />
-                    {
-                        isEmailSend === true ? (
-                            <div>
-                                <form onSubmit={(e)=>checkOTP(e)}>
-                                    <div className="input-login-container">
-                                        <label>OTP </label>
-                                        <input type="text" className="otp-input" name="otp" value={otpInput} onChange={event => setOtpInput(event.target.value)} required />
-                                        {renderErrorMessage("pass")}
-                                        <input type="submit" value="Login" className="btn-submit"/>
-                                    </div>
-                                </form>
+            {
+                isGoogleLoading === true ? <Loading /> :
+                    (
+                        <div className="login-container">
+                            <div className="login-form google-login-form">
+                                <GoogleLogin
+                                    clientId={clientId}
+                                    buttonText="Google "
+                                    onSuccess={onSuccess}
+                                    onFailure={onFailure}
+                                    cookiePolicy="single_host_origin"
+                                    isSignedIn={false}
+                                />
                             </div>
-                        ) : null
-                    }
-                </div>
-            </div>
+                            <div className="form login-form api-login-form">
+                                <form onSubmit={(e) => login(e)}>
+                                    <div className="input-login-container">
+                                        <label>Email</label>
+                                        <input type="email" className="form-input" name="email" value={emailInput} onChange={event => setEmailInput(event.target.value)} required />
+                                        {renderErrorMessage("email")}
+                                        {
+                                            isLoading === true ? <input type="submit" value="Sending Code..." className="btn-submit" disabled /> :
+                                                <input type="submit" value="Send Code" className="btn-submit" />
+                                        }
+                                    </div>
+                                </form><br />
+                                {
+                                    isEmailSend === true ? (
+                                        <div>
+                                            <form onSubmit={(e) => checkOTP(e)}>
+                                                <div className="input-login-container">
+                                                    <label>OTP </label>
+                                                    <input type="text" className="otp-input" name="otp" value={otpInput} onChange={event => setOtpInput(event.target.value)} required />
+                                                    {renderErrorMessage("pass")}
+                                                    {
+                                                        isLoading === true ? <input type="submit" value="Logging in..." className="btn-submit" disabled /> :
+                                                            <input type="submit" value="Login" className="btn-submit" />
+                                                    }
+                                                </div>
+                                            </form>
+                                        </div>
+                                    ) : null
+                                }
+                            </div>
+                        </div>
+                    )
+            }
         </div>
     )
 }
