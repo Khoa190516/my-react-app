@@ -85,7 +85,7 @@ export const MyPost = () => {
                             </LazyLoad>
                         </>
                     ) : (
-                        <div>Log in to view posts</div>
+                        <div className="no-post-txt">Log in to view posts</div>
                     )
                 )
             }
