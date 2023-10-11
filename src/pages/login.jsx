@@ -27,7 +27,6 @@ export const Login = () => {
         if (data === undefined) return;
         localStorage.setItem('token', data.token);
         window.location.reload();
-        navigate('/');
     }
 
     async function loginSuccess(emailLogin) {
@@ -83,7 +82,6 @@ export const Login = () => {
             localStorage.setItem('token', tokenReceive);
             console.log(tokenReceive);
             window.location.reload();
-            navigate('/');
         } else {
             alert("OTP is not correct");
             return;
@@ -112,39 +110,36 @@ export const Login = () => {
 
     return (
         <div className="login-card">
+            <div className="login-title">Login Page</div>
             <div className="login-container">
-                <div>
+                <div className="login-form google-login-form">
                     <GoogleLogin
                         clientId={clientId}
-                        buttonText="Google"
+                        buttonText="Google "
                         onSuccess={onSuccess}
                         onFailure={onFailure}
                         cookiePolicy="single_host_origin"
                         isSignedIn={false}
                     />
                 </div>
-                <div className="form">
+                <div className="form login-form api-login-form">
                     <form onSubmit={(e) => login(e)}>
-                        <div className="input-container">
-                            <label>Email </label>
-                            <input type="email" name="email" value={emailInput} onChange={event => setEmailInput(event.target.value)} required />
+                        <div className="input-login-container">
+                            <label>Email</label>
+                            <input type="email" className="form-input" name="email" value={emailInput} onChange={event => setEmailInput(event.target.value)} required />
                             {renderErrorMessage("email")}
-                        </div>
-                        <div className="button-container">
-                            <input type="submit" />
+                            <input type="submit" value="Send Code" className="btn-submit"/>
                         </div>
                     </form><br />
                     {
                         isEmailSend === true ? (
                             <div>
-                                <form>
-                                    <div className="input-container">
+                                <form onSubmit={(e)=>checkOTP(e)}>
+                                    <div className="input-login-container">
                                         <label>OTP </label>
-                                        <input type="text" name="otp" value={otpInput} onChange={event => setOtpInput(event.target.value)} required />
+                                        <input type="text" className="otp-input" name="otp" value={otpInput} onChange={event => setOtpInput(event.target.value)} required />
                                         {renderErrorMessage("pass")}
-                                    </div>
-                                    <div>
-                                        <button type="submit" onClick={(e) => checkOTP(e)} >Login</button>
+                                        <input type="submit" value="Login" className="btn-submit"/>
                                     </div>
                                 </form>
                             </div>

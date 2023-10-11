@@ -35,11 +35,17 @@
 
 .view-post-button {
     padding: 10px;
-    background-color: aqua;
-    border-radius: 10px;
-    font-weight: bold;;
+    background-color: rgb(5, 117, 255);
+    border-radius: 5px;
+    font-weight: bold;
+    color: white;
+    border: 1px solid rgb(5, 117, 255);
 }
 
 .view-btn-container :hover {
-    background-color: bisque;
+    box-shadow: 0 4px 8px rgb(34, 34, 35);
+}
+
+.view-post-button:active{
+    scale: 1.05;
 }

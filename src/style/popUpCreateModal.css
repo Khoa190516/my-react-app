@@ -21,7 +21,8 @@
 .header{
     text-align: center;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
+    font-size: 20px;
 }
 
 .input-container{
@@ -46,15 +47,36 @@
     width: 80px;
     height: 30px;
     border-radius: 5px;
-    border: 2px solid greenyellow;
+    margin-left: 10px;
+    border: 2px solid rgb(15, 130, 237);
     font-weight: bold;
-    background-color: greenyellow;
+    background-color: rgb(15, 130, 237);
     scale: 1.4;
     box-shadow: 0 4px 8px 0 #aabaef;
-    color: rgb(91, 86, 86);
+    color: white
 }
 
 .open-popup-button:hover{
     scale: 1.5;
-    color: rgb(45, 62, 173);
+}
+
+.input-form{
+    height: 30px;
+    padding: 10px;
+}
+
+.btn-save{
+    height: auto;
+    font-size: 15px;
+    padding: 10px 15px 10px 15px;
+    border-radius: 5px;
+    border: 1px solid rgb(15, 130, 237);
+    background-color: rgb(15, 130, 237);
+    color: white;
+    box-shadow: 0 4px 8px 0 rgb(43, 41, 41);
+    font-weight: bold;
+}
+
+.btn-save:hover{
+    scale: 1.05;
 }

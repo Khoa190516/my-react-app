@@ -17,7 +17,7 @@ export const Post = (post) => {
                             </LazyLoad>
                         </div>
                         <div className="title">{post.title}</div>
-                        <div className="category"> Contact: {post.contact && post.contact !== "string" ? post.contact : "N/A"} </div>
+                        <div className="category"> <b>Contact:</b> {post.contact && post.contact !== "string" ? post.contact : "N/A"} </div>
                         <ViewPostButtonButton {...post} />
                     </div>
                 )

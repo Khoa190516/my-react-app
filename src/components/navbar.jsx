@@ -28,7 +28,7 @@ export const Navbar = () => {
                 {
                     isLogin === true ?
                         (
-                            <button onClick={() => LogOut()}>Log out</button>
+                            <button className="logout-btn" onClick={() => LogOut()}>Log out</button>    
                         ) :
                         (
                             <Link className="link" to="/login">Login</Link>

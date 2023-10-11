@@ -104,11 +104,11 @@ export const PopUpCreateModal = () => {
                     <form onSubmit={(e) => createPost(e)}>
                         <div className="input-container">
                             <label>Title </label>
-                            <input type="text" name="title" value={title} onChange={event => setTitle(event.target.value)} required />
+                            <input className='input-form' type="text" name="title" value={title} onChange={event => setTitle(event.target.value)} required />
                             {renderErrorMessage("email")}<br />
 
                             <label>Contact </label>
-                            <textarea rows={4} name="contact" value={contact} onChange={event => setContact(event.target.value)} required />
+                            <textarea className='input-form' rows={4} name="contact" value={contact} onChange={event => setContact(event.target.value)} required />
                             {renderErrorMessage("email")}<br />
 
                             <label>Description </label>
@@ -127,7 +127,7 @@ export const PopUpCreateModal = () => {
                             <img className='img-preview' src={imgUrl} alt="preview" srcSet="" />
                         </div>
                         <div className="button-container">
-                            <input type="submit" />
+                            <input className='btn-save' type="submit" />
                         </div>
                     </form>
                 </div>

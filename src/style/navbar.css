@@ -1,6 +1,6 @@
 .navbar {
     background-color: black;
-    font-size: 25px;
+    font-size: 20px;
     padding: 20px;
     text-align: right;
 }
@@ -9,8 +9,30 @@
     color: white;
     padding: 10px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 .links :hover {
+    color: aqua;
+}
+
+.logout-btn {
+    padding: 10px 15px 10px 15px;
+    background-color: rgb(224, 35, 35);
+    border-radius: 5px;
+    font-weight: bold;
+    color: white;
+    border: 1px solid rgb(224, 35, 35);
+    margin-left: 10px;
+    font-size: 20px;
+}
+
+.logout-btn:hover{
+    scale: 1.05;
+    color: white;
+}
+
+.link:active{
     color: aqua;
 }
