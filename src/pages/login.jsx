@@ -30,7 +30,10 @@ export const Login = () => {
         setIsGoogleLoading(true);
         var data = await loginSuccess(res.profileObj.email);
         console.log(data);
-        if (data === undefined) return;
+        if (data === undefined) {
+            setIsGoogleLoading(false);
+            return;
+        };
         localStorage.setItem('token', data.token);
         setIsGoogleLoading(false);
         window.location.reload();
@@ -70,6 +73,9 @@ export const Login = () => {
 
     const onFailure = (res) => {
         console.log(res)
+        setIsGoogleLoading(false);
+        setIsLoading(false);
+        return;
     }
 
     const login = async (e) => {
