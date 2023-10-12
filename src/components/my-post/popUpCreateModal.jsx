@@ -2,15 +2,17 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import '../../style/my-post/popUpCreateModal.css';
 import { useState } from 'react';
+import { BASE_HEROKU_URL, INSERT, POST_CONTROLLER, UPLOAD_IMG } from '../../services/apis';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { BASE_HEROKU_URL, INSERT, POST_CONTROLLER, UPLOAD_IMG } from '../../services/apis';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 export const PopUpCreateModal = () => {
 
-    const [errorMessages, setErrorMessages] = useState({});
+    const [errorMessages] = useState({});
     const [title, setTitle] = useState("");
     const [des, setDes] = useState("");
     const [contact, setContact] = useState("");
@@ -33,8 +35,30 @@ export const PopUpCreateModal = () => {
         setImgUrl(objectUrl);
     }
 
+
+    function validateForm(){
+        if(title===null || title===undefined||title===""){
+            toast.error("Please fill up title")
+            return false;
+        }
+
+        if(contact===null || contact===undefined||contact===""){
+            toast.error("Please fill up contact")
+            return false;
+        }
+
+        if(des===null || des===undefined||des===""){
+            toast.error("Please fill up description")
+            return false;
+        }
+        return true;
+    }
+
     const createPost = async (e) => {
         e.preventDefault();
+
+        var isValidate = validateForm();
+        if(isValidate === false) return;
 
         if (selectedFile === null || selectedFile === undefined) {
             toast.error("Please pick a image");
@@ -101,46 +125,52 @@ export const PopUpCreateModal = () => {
         window.location.reload();
     }
 
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     return (
-        <Popup modal trigger={<div className='trigger-container'><button className='open-popup-button'>Create</button></div>}>
-            <div className="modal">
-                <div className="header"> Create Post </div>
-                <div className="content">
-                    <ToastContainer/>
-                    <form onSubmit={(e) => createPost(e)}>
-                        <div className="input-container">
-                            <label>Title </label>
-                            <input className='input-form' type="text" name="title" value={title} onChange={event => setTitle(event.target.value)} required />
-                            {renderErrorMessage("email")}<br />
-
-                            <label>Contact </label>
-                            <textarea className='input-form' rows={4} name="contact" value={contact} onChange={event => setContact(event.target.value)} required />
-                            {renderErrorMessage("email")}<br />
-
-                            <label>Description </label>
-
-                            <CKEditor
-                                editor={ClassicEditor}
-                                data={des}
-                                onChange={(e, editor) => {
-                                    const data = editor.getData();
-                                    setDes(data);
-                                }}
-                            /><br />
-
-                            <label>Image</label>
-                            <input type="file" name="image" id="image-create" onChange={(e) => fileSelectedHandler(e)} /><br />
-                            <img className='img-preview' src={imgUrl} alt="preview" srcSet="" />
-                        </div>
-                        <div className="button-container">
-                            {
-                                isLoading === true ? <input className='btn-save' type="submit" value="Saving..." disabled /> :
-                                    <input className='btn-save' type="submit" value="Save" />
-                            }
-                        </div>
-                    </form>
-                </div>
+        <>
+            <div className='trigger-container'>
+                <Button className='open-create-btn' variant="primary" onClick={handleShow}>
+                    Create
+                </Button>
             </div>
-        </Popup>
+
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Create Post</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <label>Title </label>
+                    <input className='input-form form-control' type="text" name="title" value={title} onChange={event => setTitle(event.target.value)} required />
+                    {renderErrorMessage("email")}<br />
+
+                    <label>Contact </label>
+                    <textarea className='input-form contact-form form-control' name="contact" value={contact} onChange={event => setContact(event.target.value)} required />
+                    {renderErrorMessage("email")}<br />
+
+                    <label>Description </label>
+                    <CKEditor
+                        editor={ClassicEditor}
+                        data={des}
+                        onChange={(e, editor) => {
+                            const data = editor.getData();
+                            setDes(data);
+                        }}
+                    /><br />
+
+                    <label>Image</label><br />
+                    <input className='form-group' type="file" name="image" id="image-create" onChange={(e) => fileSelectedHandler(e)} /><br /><br />
+                    <img className='img-preview' src={imgUrl} alt="preview" srcSet="" />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="primary" onClick={(e) => createPost(e)}>
+                        {isLoading === true ? <span>Saving..</span> : <span>Save</span>}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </>
     );
 }

@@ -3,6 +3,7 @@ import defaultAvatar from '../../assets/banner.jpg'
 import LazyLoad from "react-lazy-load"
 import { PopUpEditModal } from "./popUpEditModal"
 import Skeleton from 'react-loading-skeleton';
+import { ToastContainer } from 'react-toastify';
 
 export const MyPostCard = (post) => {
     return (
@@ -20,6 +21,7 @@ export const MyPostCard = (post) => {
                         <div className="title">{post.title}</div>
                         <div className="category"> <b>Contact:</b> {post.contact && post.contact !== "string" ? post.contact : <Skeleton count={1}/>} </div>
                         <PopUpEditModal {...post}/>
+                        <ToastContainer/>
                     </div>
                 )
             }

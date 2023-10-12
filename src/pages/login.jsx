@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { GoogleLogin } from "react-google-login";
 import { useNavigate } from "react-router-dom";
 import { gapi } from 'gapi-script';
 import { useEffect } from "react";
@@ -8,11 +7,14 @@ import { ACCOUNT_CONTROLLER, BASE_HEROKU_URL, LOGIN } from '../services/apis';
 import { Loading } from '../components/global/loading';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
+import jwtDecode  from "jwt-decode";
 
 export const Login = () => {
 
     const loginUrl = BASE_HEROKU_URL + ACCOUNT_CONTROLLER + LOGIN;
-    const [errorMessages, setErrorMessages] = useState({});
+    const [errorMessages] = useState({});
     const [isEmailSend, setIsEmailSend] = useState(false);
     const [emailInput, setEmailInput] = useState("");
     const [otpInput, setOtpInput] = useState("");
@@ -27,8 +29,11 @@ export const Login = () => {
 
     const onSuccess = async (res) => {
         console.log(res);
+        var decoded = jwtDecode(res.credential);
+        console.log(decoded);
+        localStorage.setItem('google-pet-name', decoded.name);
         setIsGoogleLoading(true);
-        var data = await loginSuccess(res.profileObj.email);
+        var data = await loginSuccess(decoded.email);
         console.log(data);
         if (data === undefined) {
             setIsGoogleLoading(false);
@@ -66,6 +71,7 @@ export const Login = () => {
         } else {
             var data = await res.json();
             var result = data;
+            console.log(result);
             setIsLoading(false);
             return result;
         }
@@ -99,8 +105,9 @@ export const Login = () => {
         setIsLoading(true);
         if (otpInput.trim().toLowerCase() === otp.trim().toLowerCase()) {
             localStorage.setItem('token', tokenReceive);
-            console.log(tokenReceive);
+            console.log("Token: " + tokenReceive);
             setIsLoading(false);
+            window.location.reload();
         } else {
             toast.error("OTP is not correct");
             setIsLoading(false);
@@ -137,14 +144,21 @@ export const Login = () => {
                     (
                         <div className="login-container">
                             <div className="login-form google-login-form">
-                                <GoogleLogin
+                                {/* <GoogleLogin
                                     clientId={clientId}
                                     buttonText="Google "
                                     onSuccess={onSuccess}
                                     onFailure={onFailure}
                                     cookiePolicy="single_host_origin"
                                     isSignedIn={false}
-                                />
+                                /> */}
+
+                                <GoogleOAuthProvider clientId={clientId}>
+                                    <GoogleLogin
+                                        onSuccess={ credentialResponse =>  onSuccess(credentialResponse)}
+                                        onError = {onFailure}
+                                    />
+                                </GoogleOAuthProvider>
                             </div>
                             <div className="form login-form api-login-form">
                                 <form onSubmit={(e) => login(e)}>

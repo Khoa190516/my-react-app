@@ -53,7 +53,8 @@
     background-color: rgb(15, 130, 237);
     scale: 1.4;
     box-shadow: 0 4px 8px 0 #aabaef;
-    color: white
+    color: white;
+    text-align: center;
 }
 
 .open-popup-button:hover{
@@ -63,6 +64,7 @@
 .input-form{
     height: 30px;
     padding: 10px;
+    width: 100%;
 }
 
 .btn-save{
@@ -79,4 +81,8 @@
 
 .btn-save:hover{
     scale: 1.05;
+}
+
+.contact-form{
+    height: 100px;
 }

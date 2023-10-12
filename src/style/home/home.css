@@ -2,9 +2,5 @@ h1 {
     text-align: left;
     margin-left: 5%;
     margin-bottom: 5%;
-}
-
-body{
-    background-color: rgba(226, 216, 231, 0.978);
-    margin-bottom: 5%;
+    font-weight: bold;
 }

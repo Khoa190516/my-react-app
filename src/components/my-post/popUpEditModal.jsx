@@ -2,15 +2,17 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import '../../style/my-post/popUpEditModal.css';
 import { useEffect, useState } from 'react';
+import { BASE_HEROKU_URL, DELETE, POST_CONTROLLER, UPDATE, UPLOAD_IMG } from '../../services/apis';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { BASE_HEROKU_URL, DELETE, INSERT, POST_CONTROLLER, UPDATE, UPLOAD_IMG } from '../../services/apis';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 export const PopUpEditModal = (post) => {
 
-    const [errorMessages, setErrorMessages] = useState({});
+    const [errorMessages] = useState({});
     const [title, setTitle] = useState("");
     const [des, setDes] = useState("");
     const [contact, setContact] = useState("");
@@ -35,33 +37,58 @@ export const PopUpEditModal = (post) => {
         setImgUrl(objectUrl);
     }
 
+    function validateForm() {
+        if (title === null || title === undefined || title === "") {
+            toast.error("Please fill up title")
+            return false;
+        }
+
+        if (contact === null || contact === undefined || contact === "") {
+            toast.error("Please fill up contact")
+            return false;
+        }
+
+        if (des === null || des === undefined || des === "") {
+            toast.error("Please fill up description")
+            return false;
+        }
+        return true;
+    }
+
     const editPost = async (e) => {
         e.preventDefault();
 
-        if (selectedFile === null || selectedFile === undefined) {
-            toast.error("Please pick a new image");
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('files', selectedFile, selectedFile.name);
-        setIsLoading(true);
-        const res = await fetch(uploadImageUrl, {
-            method: 'POST',
-            body: formData,
-        });
-
-        const data = await res.json();
-        console.log(data);
+        var isValidate = validateForm();
+        if (isValidate === false) return;
 
         var postImages = [];
 
-        data.forEach(element => {
+        if (selectedFile === null || selectedFile === undefined) {
+            //Get current image
             var image = {
-                imageBase64: element
+                imageBase64: imgUrl
             }
             postImages.push(image)
-        });
+        } else {
+            //Get new images
+            const formData = new FormData();
+            formData.append('files', selectedFile, selectedFile.name);
+            setIsLoading(true);
+            const res = await fetch(uploadImageUrl, {
+                method: 'POST',
+                body: formData,
+            });
+
+            const data = await res.json();
+            console.log(data);
+
+            data.forEach(element => {
+                var image = {
+                    imageBase64: element
+                }
+                postImages.push(image)
+            });
+        }
 
         var newPost = {
             id: post.id,
@@ -150,52 +177,70 @@ export const PopUpEditModal = (post) => {
         setImgUrl(post.postImages[0].imageBase64)
     }, [post])
 
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     return (
-        <Popup modal trigger={<div className='trigger-container'><button className='open-popup-button'>Edit</button></div>}>
-            <div className="modal">
-                <div className="header"> Edit Post </div>
-                <div className="content">
-                    <ToastContainer/>
-                    <form onSubmit={(e) => editPost(e)}>
-                        <div className="input-container">
-                            <label>Title </label>
-                            <input className='input-form' type="text" name="title" value={title} onChange={event => setTitle(event.target.value)} required />
-                            {renderErrorMessage("email")}<br />
-
-                            <label>Contact </label>
-                            <textarea className='input-form' rows={4} name="contact" value={contact} onChange={event => setContact(event.target.value)} required />
-                            {renderErrorMessage("email")}<br />
-
-                            <label>Description </label>
-
-                            <CKEditor
-                                editor={ClassicEditor}
-                                data={des}
-                                onChange={(e, editor) => {
-                                    const data = editor.getData();
-                                    setDes(data);
-                                }}
-                            /><br />
-
-                            <label>Image</label>
-                            <input type="file" name="image" id="image-create" onChange={(e) => fileSelectedHandler(e)} /><br />
-                            <img className='img-preview' src={imgUrl} alt="preview" srcSet="" />
-                        </div>
-                        <div className="button-container">
-                            {
-                                isDeleting === true || isLoading === true ?
-                                    (<input className='btn-delete' type="button" value={isDeleting === true ? "Deleting..." : "Delete"} onClick={(e) => deletePost(e)} disabled />) :
-                                    (<input className='btn-delete' type="button" value={isDeleting === true ? "Deleting..." : "Delete"} onClick={(e) => deletePost(e)} />)
-                            }
-                            {
-                                isLoading === true || isDeleting === true ?
-                                    (<input className='btn-save' type="submit" value={isLoading === true ? "Saving..." : "Save"} disabled />) :
-                                    (<input className='btn-save' type="submit" value={isLoading === true ? "Saving..." : "Save"} />)
-                            }
-                        </div>
-                    </form>
-                </div>
+        <>
+            <div className='trigger-container'>
+                <Button className='open-create-btn' variant="primary" onClick={handleShow}>
+                    Edit Post
+                </Button>
             </div>
-        </Popup>
+
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Edit Post</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <label>Title </label>
+                    <input className='input-form form-control' type="text" name="title" value={title} onChange={event => setTitle(event.target.value)} required />
+                    {renderErrorMessage("email")}<br />
+
+                    <label>Contact </label>
+                    <textarea className='input-form contact-form form-control' name="contact" value={contact} onChange={event => setContact(event.target.value)} required />
+                    {renderErrorMessage("email")}<br />
+
+                    <label>Description </label>
+                    <CKEditor
+                        editor={ClassicEditor}
+                        data={des}
+                        onChange={(e, editor) => {
+                            const data = editor.getData();
+                            setDes(data);
+                        }}
+                    /><br />
+
+                    <label>Image</label><br />
+                    <input className='form-group' type="file" name="image" id="image-create" onChange={(e) => fileSelectedHandler(e)} /><br /><br />
+                    <img className='img-preview' src={imgUrl} alt="preview" srcSet="" />
+                </Modal.Body>
+                <Modal.Footer>
+                    {
+                        isDeleting === true || isLoading === true ? (
+                            <Button variant="danger" onClick={(e) => deletePost(e)} disabled>
+                                {isDeleting === true ? <span>Deleting..</span> : <span>Delete</span>}
+                            </Button>
+                        ) : (
+                            <Button variant="danger" onClick={(e) => deletePost(e)}>
+                                {isDeleting === true ? <span>Deleting..</span> : <span>Delete</span>}
+                            </Button>
+                        )
+                    }
+                    {
+                        isLoading === true || isDeleting === true ? (
+                            <Button variant="primary" onClick={(e) => editPost(e)} disabled>
+                                {isLoading === true ? <span>Saving..</span> : <span>Save</span>}
+                            </Button>
+                        ) : (
+                            <Button variant="primary" onClick={(e) => editPost(e)}>
+                                {isLoading === true ? <span>Saving..</span> : <span>Save</span>}
+                            </Button>
+                        )
+                    }
+                </Modal.Footer>
+            </Modal>
+        </>
     );
 }
