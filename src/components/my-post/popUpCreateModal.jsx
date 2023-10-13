@@ -1,14 +1,15 @@
-import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import '../../style/my-post/popUpCreateModal.css';
 import { useState } from 'react';
-import { BASE_HEROKU_URL, INSERT, POST_CONTROLLER, UPLOAD_IMG } from '../../services/apis';
+import { uploadImages, insertPost } from '../../services/apis';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 
 export const PopUpCreateModal = () => {
 
@@ -19,9 +20,6 @@ export const PopUpCreateModal = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [imgUrl, setImgUrl] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-
-    const uploadImageUrl = BASE_HEROKU_URL + POST_CONTROLLER + UPLOAD_IMG;
-    const createPostUrl = BASE_HEROKU_URL + POST_CONTROLLER + INSERT;
 
     const renderErrorMessage = (email) =>
         email === errorMessages.email && (
@@ -36,18 +34,18 @@ export const PopUpCreateModal = () => {
     }
 
 
-    function validateForm(){
-        if(title===null || title===undefined||title===""){
+    function validateForm() {
+        if (title === null || title === undefined || title === "") {
             toast.error("Please fill up title")
             return false;
         }
 
-        if(contact===null || contact===undefined||contact===""){
+        if (contact === null || contact === undefined || contact === "") {
             toast.error("Please fill up contact")
             return false;
         }
 
-        if(des===null || des===undefined||des===""){
+        if (des === null || des === undefined || des === "") {
             toast.error("Please fill up description")
             return false;
         }
@@ -58,7 +56,7 @@ export const PopUpCreateModal = () => {
         e.preventDefault();
 
         var isValidate = validateForm();
-        if(isValidate === false) return;
+        if (isValidate === false) return;
 
         if (selectedFile === null || selectedFile === undefined) {
             toast.error("Please pick a image");
@@ -67,14 +65,14 @@ export const PopUpCreateModal = () => {
 
         const formData = new FormData();
         formData.append('files', selectedFile, selectedFile.name);
-        setIsLoading(true);
-        const res = await fetch(uploadImageUrl, {
-            method: 'POST',
-            body: formData,
-        });
 
-        const data = await res.json();
-        console.log(data);
+        setIsLoading(true);
+        const data = await uploadImages(formData)
+        if (data === undefined) {
+            toast.error("Upload image failed")
+            setIsLoading(false)
+            return;
+        }
 
         var postImages = [];
 
@@ -92,8 +90,6 @@ export const PopUpCreateModal = () => {
             postImages: postImages
         };
 
-        console.log(newPost);
-
         var token = localStorage.getItem('token');
 
         if (token === null || token === undefined || token === "") {
@@ -101,28 +97,16 @@ export const PopUpCreateModal = () => {
             return;
         }
 
-        token = "Bearer " + token;
+        const isCreated = await insertPost(newPost, token);
 
-        const resCreate = await fetch(createPostUrl, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-type': 'application/json',
-                'Authorization': token
-            },
-            body: JSON.stringify(newPost)
-        })
-
-        if (resCreate.status !== 200) {
+        if (isCreated === true) {
+            toast.success("Post created ");
+            setIsLoading(false);
+            window.location.reload();
+        } else {
             toast.error("Create post failed");
-            return;
+            setIsLoading(false);
         }
-
-        const dataCreate = await resCreate.json();
-        console.log(dataCreate);
-        setIsLoading(false);
-        toast.success("Post created !!");
-        window.location.reload();
     }
 
     const [show, setShow] = useState(false);
@@ -134,7 +118,7 @@ export const PopUpCreateModal = () => {
         <>
             <div className='trigger-container'>
                 <Button className='open-create-btn' variant="primary" onClick={handleShow}>
-                    Create
+                    <FontAwesomeIcon icon={faPlus} color="white" /> Create
                 </Button>
             </div>
 
@@ -166,8 +150,9 @@ export const PopUpCreateModal = () => {
                     <img className='img-preview' src={imgUrl} alt="preview" srcSet="" />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary" onClick={(e) => createPost(e)}>
-                        {isLoading === true ? <span>Saving..</span> : <span>Save</span>}
+                    <Button variant="success" onClick={(e) => createPost(e)}>
+                        {isLoading === true ? <span><FontAwesomeIcon icon={faPenToSquare} color="white" /> Saving..</span> :
+                         <span><FontAwesomeIcon icon={faPenToSquare} color="white" /> Save</span>}
                     </Button>
                 </Modal.Footer>
             </Modal>

@@ -3,7 +3,7 @@ import { MyPostCard } from "../components/my-post/myPostCard";
 import LazyLoad from "react-lazy-load";
 import 'reactjs-popup/dist/index.css';
 import { PopUpCreateModal } from "../components/my-post/popUpCreateModal";
-import { ACCOUNT_CONTROLLER, BASE_HEROKU_URL, MY_POST } from "../services/apis";
+import { getMyPosts } from "../services/apis";
 import { Loading } from "../components/global/loading";
 import '../style/my-post/myPost.css';
 
@@ -35,34 +35,22 @@ export const MyPost = () => {
         }
     );
 
-    async function GetMyPosts() {
-        const url = BASE_HEROKU_URL + ACCOUNT_CONTROLLER + MY_POST;
-        var token = "Bearer " + localStorage.getItem('token');
-        console.log(token);
-        setIsLoading(true);
-        var res = await fetch(url, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': token,
-            },
-        });
-        var data = await res.json();
-        setIsLoading(false);
-        console.log(data);
-        setUserPosts(data);
-        console.log(data);
-        console.log(userPosts);
-        console.log(isLoading);
-    }
-
     useEffect(() => {
+        const fetchMyPosts = async (token) => {
+            var data = await getMyPosts(token)
+            if(data !== undefined){
+                setUserPosts(data)
+            }
+            setIsLoading(false)
+        }
+
         var token = localStorage.getItem('token');
         if (token === undefined || token === "" || token === null) {
             setIsLogin(false);
         } else {
             setIsLogin(true);
-            GetMyPosts();
+            setIsLoading(true)
+            fetchMyPosts(token);
         }
     }, [])
 

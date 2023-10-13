@@ -1,33 +1,15 @@
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Avatar from 'react-avatar';
 import { useEffect, useState } from 'react';
-import { ACCOUNT_CONTROLLER, BASE_HEROKU_URL, PROFILE } from '../../services/apis';
-import { toast } from 'react-toastify';
+import { getProfile } from '../../services/apis';
 import defaultAvatar from '../../assets/defaultAvatar.png'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleUser, faPersonWalkingDashedLineArrowRight, faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons'
 
 function ProfileDropdown() {
 
     const [isLogin, setIsLogin] = useState(false);
     const [avatarImg, setProfile] = useState("");
-
-    const profileUrl = BASE_HEROKU_URL + ACCOUNT_CONTROLLER + PROFILE;
-
-    async function getProfile(token) {
-        var res = await fetch(profileUrl, {
-            headers: {
-                "Authorization": "Bearer " + token,
-            }
-        });
-        if (res.status === 200) {
-            var data = await res.json();
-            console.log(data);
-            var profileRaw = data;
-            setProfile(profileRaw.imageURL);
-            console.log(profileRaw.imageURL);
-        } else {
-            toast.error("Fetch Profile Failed..")
-        }
-    }
 
     function LogOut() {
         localStorage.removeItem('token');
@@ -36,12 +18,19 @@ function ProfileDropdown() {
     }
 
     useEffect(() => {
+        const fetchProfile = async () => {
+            var data = await getProfile(token)
+            if(data !== undefined){
+                setProfile(data.imageURL)
+            }
+        }
+
         var token = localStorage.getItem('token');
         if (token === null || token === undefined || token === "") {
             setIsLogin(false);
         } else {
             setIsLogin(true);
-            getProfile(token);
+            fetchProfile();
         }
     }, [])
 
@@ -50,13 +39,13 @@ function ProfileDropdown() {
             <Avatar round size='40' name="Profile"
                 src={avatarImg === "" || avatarImg === null || avatarImg === undefined ? defaultAvatar : avatarImg} />
         } id="basic-nav-dropdown">
-            <NavDropdown.Item href="#/profile">Profile</NavDropdown.Item>
+            <NavDropdown.Item href="#/profile"><FontAwesomeIcon icon={faCircleUser} color="black" /> Profile</NavDropdown.Item>
             <NavDropdown.Divider />
             <div className='sign-in-out-container'>
                 {isLogin === true ? (
-                    <div className='dropdown-item' onClick={(e) => LogOut(e)}>Log out</div>
+                    <div className='dropdown-item' onClick={(e) => LogOut(e)}><FontAwesomeIcon icon={faPersonWalkingDashedLineArrowRight} color="black" /> Log out</div>
                 ) : (
-                    <a className='dropdown-item' href='#/login'>Log in</a>
+                    <a className='dropdown-item' href='#/login'><FontAwesomeIcon icon={faArrowCircleLeft} color="black" /> Log in</a>
                 )}
             </div>
         </NavDropdown>

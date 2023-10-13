@@ -3,16 +3,15 @@ import { useParams } from "react-router-dom"
 import defaultAvatar from "../assets/banner.jpg"
 import "../style/post-detail/postDetail.css"
 import parse from 'html-react-parser'
-import { BASE_HEROKU_URL, GET_POST_BY_ID, POST_CONTROLLER } from "../services/apis";
+import { getPostById } from "../services/apis";
 import { Loading } from "../components/global/loading";
 
 export const PostDetail = () => {
     const { id } = useParams();
     const [isLoading, setIsLoading] = useState(true);
-    var localPetUrl = BASE_HEROKU_URL + POST_CONTROLLER + GET_POST_BY_ID;
 
     const [pet, setPet] = useState({
-        id: "string",
+        id: "",
         title: "",
         postImages: [
             {
@@ -27,19 +26,16 @@ export const PostDetail = () => {
         isClosed: false
     });
 
-    async function GetPet() {
-        console.log(localPetUrl + id);
-        var url = localPetUrl + id + "";
-        var res = await fetch(url);
-        var data = await res.json();
-        console.log("Data: " + data);
-        setPet(data);
-        setIsLoading(false);
-    }
-
     useEffect(() => {
-        GetPet();
-    }, []);
+        const fetchPostWithId = async () =>{
+            var data = await getPostById(id)
+            if(data !== undefined){
+                setPet(data)
+            }
+            setIsLoading(false)
+        }
+        fetchPostWithId()
+    }, [id]);
 
     return (
         <>

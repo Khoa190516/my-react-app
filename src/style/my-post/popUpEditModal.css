@@ -37,9 +37,9 @@
     height: 80%;
 }
 
-.trigger-container{
+.trigger-edit-container{
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     margin-top: 7%;
     margin-right: 7%;
     margin-bottom: 3%;

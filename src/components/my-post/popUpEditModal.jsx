@@ -1,14 +1,15 @@
-import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import '../../style/my-post/popUpEditModal.css';
 import { useEffect, useState } from 'react';
-import { BASE_HEROKU_URL, DELETE, POST_CONTROLLER, UPDATE, UPLOAD_IMG } from '../../services/apis';
+import { updatePost, uploadImages, deletePost } from '../../services/apis';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 
 export const PopUpEditModal = (post) => {
 
@@ -20,10 +21,6 @@ export const PopUpEditModal = (post) => {
     const [imgUrl, setImgUrl] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
-
-    const uploadImageUrl = BASE_HEROKU_URL + POST_CONTROLLER + UPLOAD_IMG;
-    const editPostUrl = BASE_HEROKU_URL + POST_CONTROLLER + UPDATE;
-    const deletePostUrl = BASE_HEROKU_URL + POST_CONTROLLER + DELETE;
 
     const renderErrorMessage = (email) =>
         email === errorMessages.email && (
@@ -73,14 +70,14 @@ export const PopUpEditModal = (post) => {
             //Get new images
             const formData = new FormData();
             formData.append('files', selectedFile, selectedFile.name);
-            setIsLoading(true);
-            const res = await fetch(uploadImageUrl, {
-                method: 'POST',
-                body: formData,
-            });
 
-            const data = await res.json();
-            console.log(data);
+            setIsLoading(true);
+            const data = await uploadImages(formData)
+            if(data === undefined){
+                toast.error("Upload image got error");
+                setIsLoading(false);
+                return;
+            }
 
             data.forEach(element => {
                 var image = {
@@ -98,8 +95,6 @@ export const PopUpEditModal = (post) => {
             postImages: postImages
         };
 
-        console.log(newPost);
-
         var token = localStorage.getItem('token');
 
         if (token === null || token === undefined || token === "") {
@@ -107,31 +102,18 @@ export const PopUpEditModal = (post) => {
             return;
         }
 
-        token = "Bearer " + token;
-
-        const resCreate = await fetch(editPostUrl, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-type': 'application/json',
-                'Authorization': token
-            },
-            body: JSON.stringify(newPost)
-        })
-
-        if (resCreate.status !== 200) {
-            toast.error("Edit post failed");
-            return;
+        const isEdited = await updatePost(newPost, token);
+        if(isEdited === true){
+            toast.success("Post Updated");
+            setIsLoading(false);
+            window.location.reload();
+        }else{
+            toast.error("Update post failed");
+            setIsLoading(false);
         }
-
-        const dataCreate = await resCreate.json();
-        console.log(dataCreate);
-        setIsLoading(false);
-        toast.success("Post Updated !!");
-        window.location.reload();
     }
 
-    const deletePost = async (e) => {
+    const deletePostHandler = async (e) => {
         e.preventDefault();
 
         var token = localStorage.getItem('token');
@@ -141,36 +123,23 @@ export const PopUpEditModal = (post) => {
             return;
         }
 
-        token = "Bearer " + token;
-
-        const deletePost = {
+        const deletePostModel = {
             id: post.id,
         };
+
         setIsDeleting(true);
-        const resCreate = await fetch(deletePostUrl, {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-type': 'application/json',
-                'Authorization': token
-            },
-            body: JSON.stringify(deletePost)
-        })
-
-        if (resCreate.status !== 200) {
-            toast.error("Delete post failed");
-            return;
+        var isDeleted = await deletePost(deletePostModel, token);
+        if(isDeleted === true){
+            toast.success("Post deleted")
+            setIsDeleting(false)
+            window.location.reload()
+        }else{
+            toast.error("Delete post failed")
+            setIsDeleting(false)
         }
-
-        const dataCreate = await resCreate.json();
-        console.log(dataCreate);
-        setIsDeleting(false);
-        toast.success("Post Delete !!");
-        window.location.reload();
     }
 
     useEffect(() => {
-        console.log("Check: " + post.title)
         setTitle(post.title)
         setContact(post.contact)
         setDes(post.description)
@@ -183,9 +152,9 @@ export const PopUpEditModal = (post) => {
 
     return (
         <>
-            <div className='trigger-container'>
+            <div className='trigger-edit-container'>
                 <Button className='open-create-btn' variant="primary" onClick={handleShow}>
-                    Edit Post
+                <FontAwesomeIcon icon={faPenToSquare} color="white" /> Edit Post
                 </Button>
             </div>
 
@@ -219,23 +188,25 @@ export const PopUpEditModal = (post) => {
                 <Modal.Footer>
                     {
                         isDeleting === true || isLoading === true ? (
-                            <Button variant="danger" onClick={(e) => deletePost(e)} disabled>
-                                {isDeleting === true ? <span>Deleting..</span> : <span>Delete</span>}
+                            <Button variant="danger" onClick={(e) => deletePostHandler(e)} disabled>
+                                {isDeleting === true ? <span><FontAwesomeIcon icon={faTrash} color="white" /> Deleting..</span> : 
+                                <span><FontAwesomeIcon icon={faTrash} color="white" /> Delete</span>}
                             </Button>
                         ) : (
-                            <Button variant="danger" onClick={(e) => deletePost(e)}>
-                                {isDeleting === true ? <span>Deleting..</span> : <span>Delete</span>}
+                            <Button variant="danger" onClick={(e) => deletePostHandler(e)}>
+                                {isDeleting === true ? <span><FontAwesomeIcon icon={faTrash} color="white" /> Deleting..</span> : 
+                                <span><FontAwesomeIcon icon={faTrash} color="white" /> Delete</span>}
                             </Button>
                         )
                     }
                     {
                         isLoading === true || isDeleting === true ? (
-                            <Button variant="primary" onClick={(e) => editPost(e)} disabled>
-                                {isLoading === true ? <span>Saving..</span> : <span>Save</span>}
+                            <Button variant="success" onClick={(e) => editPost(e)} disabled>
+                                {isLoading === true ? <span><FontAwesomeIcon icon={faPenToSquare} color="white" /> Saving..</span> : <span><FontAwesomeIcon icon={faPenToSquare} color="white" /> Save</span>}
                             </Button>
                         ) : (
-                            <Button variant="primary" onClick={(e) => editPost(e)}>
-                                {isLoading === true ? <span>Saving..</span> : <span>Save</span>}
+                            <Button variant="success" onClick={(e) => editPost(e)}>
+                                {isLoading === true ? <span><FontAwesomeIcon icon={faPenToSquare} color="white" /> Saving..</span> : <span><FontAwesomeIcon icon={faPenToSquare} color="white" /> Save</span>}
                             </Button>
                         )
                     }

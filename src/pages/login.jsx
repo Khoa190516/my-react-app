@@ -144,15 +144,6 @@ export const Login = () => {
                     (
                         <div className="login-container">
                             <div className="login-form google-login-form">
-                                {/* <GoogleLogin
-                                    clientId={clientId}
-                                    buttonText="Google "
-                                    onSuccess={onSuccess}
-                                    onFailure={onFailure}
-                                    cookiePolicy="single_host_origin"
-                                    isSignedIn={false}
-                                /> */}
-
                                 <GoogleOAuthProvider clientId={clientId}>
                                     <GoogleLogin
                                         onSuccess={ credentialResponse =>  onSuccess(credentialResponse)}
@@ -166,6 +157,7 @@ export const Login = () => {
                                         <label>Email</label>
                                         <input type="email" className="form-input" name="email" value={emailInput} onChange={event => setEmailInput(event.target.value)} required />
                                         {renderErrorMessage("email")}
+                                        
                                         {
                                             isLoading === true ? <input type="submit" value="Sending Code..." className="btn-submit" disabled /> :
                                                 <input type="submit" value="Send Code" className="btn-submit" />

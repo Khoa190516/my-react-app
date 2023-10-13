@@ -2,25 +2,23 @@ import { Post } from './post'
 import '../../style/home/postList.css'
 import { useEffect, useState } from 'react'
 import LazyLoad from 'react-lazy-load'
-import { BASE_HEROKU_URL, POST_CONTROLLER } from '../../services/apis'
 import { Loading } from '../global/loading'
-
+import { getPosts } from '../../services/apis'
+ 
 export const PostList = () => {
     const [posts, setPosts] = useState([]);
-    const[isLoading, setIsLoading] = useState(true);
-
-    async function fetchPosts() {
-        var localUrl = BASE_HEROKU_URL + POST_CONTROLLER;
-        var res = await fetch(localUrl);
-        var data = await res.json();
-        console.log(data);
-        setPosts(data);
-        setIsLoading(false);
-        console.log(posts);
-    }
+    const[isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        fetchPosts();
+        const fetchPosts = async () => {
+            var data = await getPosts();
+            if(data !== undefined){
+                setPosts(data);
+            }
+            setIsLoading(false);
+        }
+        setIsLoading(true);
+        fetchPosts()
     }, []);
 
     return (
