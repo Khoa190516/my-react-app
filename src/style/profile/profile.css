@@ -2,7 +2,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(23, 23, 23);
     height: 100vh;
 }
 
@@ -11,11 +10,12 @@
     height: auto;
     min-height: 500px;
     padding: 5%;
-    box-shadow: 0 4px 8px 0 rgb(111, 108, 108);
+    box-shadow: 0 4px 8px 0 rgb(26, 24, 24);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    background-color: rgb(13, 12, 12);
+    background-color: rgb(37, 29, 29);
+    background-image: linear-gradient(180.2deg, rgb(35, 31, 31) 6.8%, rgb(138, 156, 192) 131%);
     color: white;
 }
 

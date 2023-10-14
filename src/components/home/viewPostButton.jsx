@@ -9,7 +9,7 @@ export default function ViewPostButton(post){
 
     return (
         <div className="view-btn-container">
-            <button onClick={showPost} className="view-post-button">View More</button>
+            <button onClick={showPost} className="view-post-button">More Details</button>
         </div>
     )
 }

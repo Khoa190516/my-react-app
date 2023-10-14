@@ -27,9 +27,9 @@ export const PostDetail = () => {
     });
 
     useEffect(() => {
-        const fetchPostWithId = async () =>{
+        const fetchPostWithId = async () => {
             var data = await getPostById(id)
-            if(data !== undefined){
+            if (data !== undefined) {
                 setPet(data)
             }
             setIsLoading(false)
@@ -38,26 +38,27 @@ export const PostDetail = () => {
     }, [id]);
 
     return (
-        <>
-            <div className="detail-title">View Post</div>
+        <div>
             {isLoading === true ? <Loading /> : (
                 pet.id !== undefined ? (
-                    <div className="post-detail">
-                        <div className="img-container-detail left-content">
-                            <img src={pet.postImages.length <= 0 ? defaultAvatar : pet.postImages[0].imageBase64} alt="post" />
-                        </div>
-                        <div className="right-detail-content">
-                            <div className="title-detail">{pet.title}</div><br />
-                            <div className="category-detail"> <b>Contact:</b> {pet.contact !== "string" ? pet.contact : "N/A"} </div>
-                            <div className="category-detail">
-                                <b>Created:</b> {pet.createdString}
-                            </div><br />
-                            <div className="category-detail"><b>Description: </b>{pet.description === null ? "" : parse(pet.description + "")}</div>
+                    <div className="detail-container">
+                        <div className="post-detail">
+                            <div className="img-container-detail left-content">
+                                <img src={pet.postImages.length <= 0 ? defaultAvatar : pet.postImages[0].imageBase64} alt="post" />
+                            </div>
+                            <div className="right-detail-content">
+                                <div className="title-detail">{pet.title}</div><br />
+                                <div className="category-detail"> <b>Contact:</b> {pet.contact !== "string" ? pet.contact : "N/A"} </div>
+                                <div className="category-detail">
+                                    <b>Created:</b> {pet.createdString}
+                                </div><br />
+                                <div className="category-detail"><b>Description: </b>{pet.description === null ? "" : parse(pet.description + "")}</div>
+                            </div>
                         </div>
                     </div>
                 ) : (
                     <div>Opps... something went wrong !</div>
                 ))}
-        </>
+        </div>
     )
 }

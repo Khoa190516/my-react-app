@@ -57,15 +57,15 @@ export const MyPost = () => {
     }, [isLoggedIn])
 
     return (
-        <>
-            <div className="my-post-title">My Posts</div>
+        <div>
             {
                 isLoading === true ? <Loading /> : (
                     isLogin === true ? (
-                        <>
+                        <div className="no-my-post-container">
                             <div>
                                 <PopUpCreateModal></PopUpCreateModal>
                             </div>
+                            <div className="my-post-title">My Posts</div>
                             <LazyLoad>
                                 <div className="list-post">
                                     {
@@ -73,12 +73,14 @@ export const MyPost = () => {
                                     }
                                 </div>
                             </LazyLoad>
-                        </>
+                        </div>
                     ) : (
-                        <div className="no-post-txt">Log in to view posts</div>
+                        <div className="no-my-post-container">
+                            <div className="no-post-txt">Log in to view posts</div>
+                        </div>
                     )
                 )
             }
-        </>
+        </div>
     );
 } 

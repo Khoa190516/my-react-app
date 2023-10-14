@@ -48,7 +48,8 @@ const Login = () => {
         return;
     }
 
-    const loginByOTP = async () => {
+    const loginByOTP = async (e) => {
+        e.preventDefault()
         setIsLoading(true);
         var data = await signIn(emailInput, true)
         if (data === undefined) {
@@ -97,63 +98,65 @@ const Login = () => {
     }, []);
 
     return (
-        <>
-            <ToastContainer></ToastContainer>
-            <div className="login-card">
-                <div className="login-title">{isLoading === true || isGoogleLoading === true ? "Processing.." : "Login Page"}</div>
-                {
-                    isGoogleLoading === true ? <Loading /> :
-                        (
-                            <div className="login-container">
-                                <div className="login-form google-login-form">
-                                    <GoogleOAuthProvider clientId={clientId}>
-                                        <GoogleLogin
-                                            onSuccess={(credentialResponse) => onSuccess(credentialResponse)}
-                                            onError={onFailure}
-                                        />
-                                    </GoogleOAuthProvider>
-                                </div>
-                                <div className="form login-form api-login-form">
-                                    <form onSubmit={(e) => loginByOTP(e)}>
-                                        <div className="input-login-container">
-                                            <label>Email</label>
-                                            <input type="email" className="form-input" name="email" value={emailInput} onChange={event => setEmailInput(event.target.value)} required />
+        <div className="login-page-body">
+            <div className="login-card-container">
+                <ToastContainer></ToastContainer>
+                <div className="login-card">
+                    <div className="login-title">{isLoading === true || isGoogleLoading === true ? "Processing.." : "Sign in"}</div>
+                    {
+                        isGoogleLoading === true ? <Loading /> :
+                            (
+                                <div className="login-container">
+                                    <div className="login-form google-login-form">
+                                        <GoogleOAuthProvider clientId={clientId}>
+                                            <GoogleLogin
+                                                onSuccess={(credentialResponse) => onSuccess(credentialResponse)}
+                                                onError={onFailure}
+                                            />
+                                        </GoogleOAuthProvider>
+                                    </div>
+                                    <div className="form login-form api-login-form">
+                                        <form onSubmit={(e) => loginByOTP(e)}>
+                                            <div className="input-login-container">
+                                                <label>Email</label>
+                                                <input type="email" placeholder="email" className="form-input" name="email" value={emailInput} onChange={event => setEmailInput(event.target.value)} required />
 
-                                            {
-                                                isLoading === true ? <input type="submit" value="Sending Code..." className="btn-submit" disabled /> :
-                                                    <input type="submit" value="Send Code" className="btn-submit" />
-                                            }
-                                        </div>
-                                    </form><br />
-                                    {
-                                        isEmailSend === true ? (
-                                            <div>
-                                                <form onSubmit={(e) => checkOTP(e)}>
-                                                    <div className="input-login-container">
-                                                        <label>OTP </label>
-                                                        <input type="text" className="otp-input" name="otp" value={otpInput} onChange={event => setOtpInput(event.target.value)} required />
-                                                        {
-                                                            isLoading === true ? <input type="submit" value="Logging in..." className="btn-submit" disabled /> :
-                                                                <input type="submit" value="Login" className="btn-submit" />
-                                                        }
-                                                    </div>
-                                                </form>
+                                                {
+                                                    isLoading === true ? <input type="submit" value="Sending Code..." className="btn-submit" disabled /> :
+                                                        <input type="submit" value="Send Code" className="btn-submit" />
+                                                }
                                             </div>
-                                        ) : null
-                                    }
+                                        </form>
+                                        {
+                                            isEmailSend === true ? (
+                                                <div>
+                                                    <form onSubmit={(e) => checkOTP(e)}>
+                                                        <div className="input-login-container">
+                                                            <label>OTP </label>
+                                                            <input type="text" placeholder="otp" className="otp-input" name="otp" value={otpInput} onChange={event => setOtpInput(event.target.value)} required />
+                                                            {
+                                                                isLoading === true ? <input type="submit" value="Logging in..." className="btn-submit" disabled /> :
+                                                                    <input type="submit" value="Login" className="btn-submit" />
+                                                            }
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            ) : null
+                                        }
+                                    </div>
                                 </div>
+                            )
+                    }
+                    {
+                        isLoading === true || isGoogleLoading === true ? null :
+                            <div className="sign-up-container">
+                                <div className="sign-up-title">Don't have account ? </div>
+                                <SignUpPopUpModal />
                             </div>
-                        )
-                }
-                {
-                    isLoading === true || isGoogleLoading === true ? null :
-                        <div className="sign-up-container">
-                            <div className="sign-up-title">Don't have account ? </div>
-                            <SignUpPopUpModal />
-                        </div>
-                }
+                    }
+                </div>
             </div>
-        </>
+        </div>
     )
 }
 
