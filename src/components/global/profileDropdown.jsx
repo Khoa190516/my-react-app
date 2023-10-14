@@ -1,26 +1,30 @@
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Avatar from 'react-avatar';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { getProfile } from '../../services/apis';
 import defaultAvatar from '../../assets/defaultAvatar.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser, faPersonWalkingDashedLineArrowRight, faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons'
+import { ApiContext } from "../../store/ApiContext";
 
-function ProfileDropdown() {
+const ProfileDropdown = () => {
 
     const [isLogin, setIsLogin] = useState(false);
     const [avatarImg, setProfile] = useState("");
 
-    function LogOut() {
+    const { isLoggedIn, logout, login } = useContext(ApiContext)
+
+    const LogOut = () => {
         localStorage.removeItem('token');
-        localStorage.removeItem('google-pet-name');
-        window.location.reload();
+        setIsLogin(false)
+        logout()
+        setProfile("")
     }
 
     useEffect(() => {
-        const fetchProfile = async () => {
+        const fetchProfile = async (token) => {
             var data = await getProfile(token)
-            if(data !== undefined){
+            if (data !== undefined) {
                 setProfile(data.imageURL)
             }
         }
@@ -30,9 +34,12 @@ function ProfileDropdown() {
             setIsLogin(false);
         } else {
             setIsLogin(true);
-            fetchProfile();
+            login()
+            if (isLoggedIn === true) {
+                fetchProfile(token);
+            }
         }
-    }, [])
+    }, [isLoggedIn])
 
     return (
         <NavDropdown className='avatar-dropdown' title={
@@ -45,11 +52,11 @@ function ProfileDropdown() {
                 {isLogin === true ? (
                     <div className='dropdown-item' onClick={(e) => LogOut(e)}><FontAwesomeIcon icon={faPersonWalkingDashedLineArrowRight} color="black" /> Log out</div>
                 ) : (
-                    <a className='dropdown-item' href='#/login'><FontAwesomeIcon icon={faArrowCircleLeft} color="black" /> Log in</a>
+                    <NavDropdown.Item href='#/login'><FontAwesomeIcon icon={faArrowCircleLeft} color="black" /> Log in</NavDropdown.Item>
                 )}
             </div>
         </NavDropdown>
     );
 }
 
-export default ProfileDropdown;
+export default ProfileDropdown

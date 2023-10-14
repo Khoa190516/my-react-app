@@ -3,6 +3,7 @@ import '../style/navbar.css'
 import ProfileDropdown from "./global/profileDropdown";
 import { Navbar, Container } from "react-bootstrap";
 
+
 export const Navibar = () => {
 
     return (
@@ -14,7 +15,7 @@ export const Navibar = () => {
                         <NavLink className={({ isActive }) => isActive ? "active link my-post-link" : "link my-post-link"} to="/my-post">My Post</NavLink>
                     </div>
                 </div>
-                <ProfileDropdown />
+                <ProfileDropdown/>
             </Container>
         </Navbar>
     )

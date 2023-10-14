@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MyPostCard } from "../components/my-post/myPostCard";
 import LazyLoad from "react-lazy-load";
 import 'reactjs-popup/dist/index.css';
@@ -6,10 +6,12 @@ import { PopUpCreateModal } from "../components/my-post/popUpCreateModal";
 import { getMyPosts } from "../services/apis";
 import { Loading } from "../components/global/loading";
 import '../style/my-post/myPost.css';
+import { ApiContext } from "../store/ApiContext";
 
 export const MyPost = () => {
     const [isLogin, setIsLogin] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const { isLoggedIn } = useContext(ApiContext)
     const [userPosts, setUserPosts] = useState(
         {
             id: "string",
@@ -38,7 +40,7 @@ export const MyPost = () => {
     useEffect(() => {
         const fetchMyPosts = async (token) => {
             var data = await getMyPosts(token)
-            if(data !== undefined){
+            if (data !== undefined) {
                 setUserPosts(data)
             }
             setIsLoading(false)
@@ -52,7 +54,7 @@ export const MyPost = () => {
             setIsLoading(true)
             fetchMyPosts(token);
         }
-    }, [])
+    }, [isLoggedIn])
 
     return (
         <>

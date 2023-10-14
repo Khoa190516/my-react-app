@@ -1,12 +1,12 @@
 .login-card {
-    width: auto;
+    width: fit-content;
+    height: fit-content;
     background-color: rgb(255, 255, 255);
-    padding: 5%;
+    padding: 5% 10% 2% 5%;
     border-radius: 15px;
     box-shadow: 0 4px 8px 0 rgb(34, 33, 33);
-    position: absolute;
-    left: 50%;
-    top: 20%;
+    margin-left: 50%;
+    margin-top: 5%;
 }
 
 .login-container {
@@ -16,7 +16,6 @@
 
 div > .login-form{
     margin-left: 10%;
-    margin-right: 10%;
 }
 
 div > .google-login-form{
@@ -45,7 +44,7 @@ div > .google-login-form{
     padding: 10px;
     text-align: center;
     outline: none;
-    border: 1px solid white;
+    border: 1px solid rgb(143, 207, 247);
     font-size: 14px;
 }
 
@@ -100,4 +99,33 @@ label{
     background-color: rgb(10, 131, 251);
     border: 1px solid rgb(10, 131, 251);
     color: white;
+}
+
+.sign-up-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 5%;
+}
+
+.sign-up-title{
+    color: rgb(0, 0, 0);
+    font-style: italic;
+    margin-right: 2%;
+    font-weight: 500;
+}
+
+.sign-up-container{
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.sign-up-btn-container{
+    display: flex;
+    justify-content: center;
+}
+
+.google-sign-up-text{
+    font-style: italic;
 }

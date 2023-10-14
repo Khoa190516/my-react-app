@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { toast } from 'react-toastify'
 import { getProfile } from "../services/apis";
 import { Loading } from "../components/global/loading";
@@ -8,6 +8,7 @@ import defaultAvatar from '../assets/defaultAvatar.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faMobile } from '@fortawesome/free-solid-svg-icons'
 import { EditProfileModal } from "../components/profile/editProfileModal";
+import { ApiContext } from "../store/ApiContext";
 
 
 export const Profile = () => {
@@ -21,8 +22,11 @@ export const Profile = () => {
         imageURL: "",
     });
 
+    const { isLoggedIn } = useContext(ApiContext)
+
     useEffect(() => {
         const fetchProfile = async (token) => {
+            setIsLoading(true)
             var data = await getProfile(token);
             if (data !== undefined) {
                 setProfile(data)
@@ -41,7 +45,7 @@ export const Profile = () => {
             setIsLogin(true);
             fetchProfile(token)
         }
-    }, [])
+    }, [isLoggedIn])
 
     return (
         <div className="profile-page">

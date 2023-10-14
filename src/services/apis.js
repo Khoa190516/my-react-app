@@ -13,6 +13,7 @@ export const MY_POST = "/get-posts-by-user";
 export const UPLOAD_IMG = "/upload-images";
 export const LOGIN = "/login";
 export const GET_POST_BY_ID = "/get-by-id?postId=";
+export const SIGN_UP = "/sign-up";
 
 export const getPosts = async () => {
     try {
@@ -189,5 +190,52 @@ export const updateProfile = async (profile, token) => {
     } catch (error) {
         console.log(error)
         return false
+    }
+}
+
+export const signUp = async (account) => {
+    try{
+        const resCreate = await fetch(BASE_HEROKU_URL + ACCOUNT_CONTROLLER + SIGN_UP, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(account)
+        })
+
+        var resCode = resCreate.status;
+        return resCode;
+    }catch(error){
+        console.log(error)
+        return error
+    }
+}
+
+export const signIn = async (emailLogin, isSendOTP) => {
+    try {
+        var res = await fetch(BASE_HEROKU_URL + ACCOUNT_CONTROLLER + LOGIN,
+            {
+                method: "POST",
+                headers: {
+                    'Accept': '*/*',
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                body: JSON.stringify({
+                    email: emailLogin,
+                    isSendOTP: isSendOTP
+                })
+            }
+        );
+
+        if(res.status === 200){
+            var data = await res.json();
+            return data;
+        }
+        return undefined;
+    } catch (e) {
+        console.log(e.message);
+        return undefined;
     }
 }
