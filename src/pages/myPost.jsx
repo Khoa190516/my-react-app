@@ -57,11 +57,11 @@ export const MyPost = () => {
     }, [isLoggedIn])
 
     return (
-        <div>
+        <div className="my-post-page">
             {
                 isLoading === true ? <Loading /> : (
                     isLogin === true ? (
-                        <div className="no-my-post-container">
+                        <div>
                             <div>
                                 <PopUpCreateModal></PopUpCreateModal>
                             </div>

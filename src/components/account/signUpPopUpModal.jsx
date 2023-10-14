@@ -67,7 +67,7 @@ export const SignUpPopUpModal = () => {
         if (resCode === 200) {
             toast.success("Signed Up");
             setIsGoogleLoading(false);
-            setTimeout(()=>{
+            setTimeout(() => {
                 window.location.reload();
             })
         } else if (resCode === 409) {
@@ -99,17 +99,14 @@ export const SignUpPopUpModal = () => {
                 <Modal.Body>
                     {
                         isGoogleLoading === true ? <Loading /> :
-                            <form onSubmit={(e) => signUpHandler(e)}>
-                                <label>Your email </label>
+                            <form className="form-sign-up" onSubmit={(e) => signUpHandler(e)}>
                                 <input placeholder="Email" type='email' className='form-input' name="email" value={email} onChange={event => setEmail(event.target.value)} required /><br />
-                                <div className="sign-up-btn-container">
-                                    {
-                                        <Button type="submit" variant="primary" disabled={isLoading ? "disabled" : ""}>
-                                            {isLoading === true ? <span><FontAwesomeIcon icon={faUserPlus} color="white" /> Signing Up..</span> :
-                                                <span><FontAwesomeIcon icon={faUserPlus} color="white" /> Sign Up</span>}
-                                        </Button>
-                                    }
-                                </div>
+                                {
+                                    <Button type="submit" variant="primary" disabled={isLoading ? "disabled" : ""}>
+                                        {isLoading === true ? <span><FontAwesomeIcon icon={faUserPlus} color="white" /> Signing Up..</span> :
+                                            <span><FontAwesomeIcon icon={faUserPlus} color="white" /> Sign Up</span>}
+                                    </Button>
+                                }
                             </form>
                     }
                 </Modal.Body>

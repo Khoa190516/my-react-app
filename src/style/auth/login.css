@@ -28,7 +28,10 @@ div > .login-form{
 }
 
 div > .google-login-form{
-    justify-content: center;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5%;
+    margin-right: -3%;
 }
 
 .login-title{
@@ -73,10 +76,10 @@ div > .google-login-form{
 }
 
 .api-login-form{
-    padding: 5%;
+    padding: 5% 10% 5% 10%;
     border-radius: 10px;
     background-image: linear-gradient(rgba(145, 234, 228, 0.866),rgba(48, 175, 213, 0.866));
-    box-shadow: 0 4px 8px 0 rgb(87, 83, 83);
+    box-shadow: 0 4px 8px 0 rgb(120, 127, 125);
     width: auto;
     height: auto;
     display: flex;
@@ -103,11 +106,6 @@ label{
     color: white;
 }
 
-/* .btn-submit:hover, .form-input:hover, .otp-input:hover{
-    box-shadow: 0 4px 8px 0 rgb(78, 76, 76);
-    font-weight: bold;
-} */
-
 .btn-submit:hover{
     scale: 1.1;
     background-color: rgb(10, 113, 216);
@@ -127,7 +125,7 @@ label{
 }
 
 .sign-up-title{
-    color: rgb(255, 255, 255);
+    color: rgb(158, 160, 164);
     font-style: italic;
     margin-right: 2%;
     font-weight: 500;
@@ -139,11 +137,13 @@ label{
     justify-content: flex-end;
 }
 
-.sign-up-btn-container{
-    display: flex;
-    justify-content: center;
-}
-
 .google-sign-up-text{
     font-style: italic;
+}
+
+.form-sign-up{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }

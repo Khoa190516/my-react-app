@@ -57,7 +57,7 @@ const Login = () => {
             return;
         };
         setOtp(data.otp);
-        toast.info(data.otp);
+        console.log(data.otp);
         setTokenReceive(data.token);
         setIsEmailSend(true);
         setIsLoading(false);
@@ -107,14 +107,6 @@ const Login = () => {
                         isGoogleLoading === true ? <Loading /> :
                             (
                                 <div className="login-container">
-                                    <div className="login-form google-login-form">
-                                        <GoogleOAuthProvider clientId={clientId}>
-                                            <GoogleLogin
-                                                onSuccess={(credentialResponse) => onSuccess(credentialResponse)}
-                                                onError={onFailure}
-                                            />
-                                        </GoogleOAuthProvider>
-                                    </div>
                                     <div className="form login-form api-login-form">
                                         <form onSubmit={(e) => loginByOTP(e)}>
                                             <div className="input-login-container">
@@ -143,6 +135,14 @@ const Login = () => {
                                                 </div>
                                             ) : null
                                         }
+                                        <div className="google-login-form">
+                                            <GoogleOAuthProvider clientId={clientId}>
+                                                <GoogleLogin
+                                                    onSuccess={(credentialResponse) => onSuccess(credentialResponse)}
+                                                    onError={onFailure}
+                                                />
+                                            </GoogleOAuthProvider>
+                                        </div>
                                     </div>
                                 </div>
                             )
