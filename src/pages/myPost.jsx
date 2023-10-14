@@ -61,7 +61,7 @@ export const MyPost = () => {
             {
                 isLoading === true ? <Loading /> : (
                     isLogin === true ? (
-                        <div>
+                        <div className={userPosts.posts.length > 0 ? "" : "my-post-list-container"}>
                             <div>
                                 <PopUpCreateModal></PopUpCreateModal>
                             </div>
