@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/pet-garden-react/static/css/main.70d31977.css",
-    "main.js": "/pet-garden-react/static/js/main.0c3f675b.js",
+    "main.js": "/pet-garden-react/static/js/main.96921af6.js",
     "static/js/787.bc7d429a.chunk.js": "/pet-garden-react/static/js/787.bc7d429a.chunk.js",
     "static/media/banner.jpg": "/pet-garden-react/static/media/banner.d351650928c0b007fa53.jpg",
     "index.html": "/pet-garden-react/index.html",
     "main.70d31977.css.map": "/pet-garden-react/static/css/main.70d31977.css.map",
-    "main.0c3f675b.js.map": "/pet-garden-react/static/js/main.0c3f675b.js.map",
+    "main.96921af6.js.map": "/pet-garden-react/static/js/main.96921af6.js.map",
     "787.bc7d429a.chunk.js.map": "/pet-garden-react/static/js/787.bc7d429a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.70d31977.css",
-    "static/js/main.0c3f675b.js"
+    "static/js/main.96921af6.js"
   ]
 }
