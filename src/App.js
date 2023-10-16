@@ -9,6 +9,7 @@ import { MyPost } from './pages/myPost';
 import { Profile } from './pages/profile';
 import 'bootstrap/dist/css/bootstrap.css';
 import { ApiProvider } from './store/ApiContext';
+import { Footer } from './components/global/footer';
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
             <Route path='/my-post' Component={MyPost} />
             <Route path='*' Component={Error} />
           </Routes>
+          <Footer />
         </Router>
       </div>
     </ApiProvider>
